@@ -2,6 +2,24 @@
 
 > 每日读完 datastructure.md 当日小节后，再读本文件同日小节。读完后前往 **combo.md** 同日小节。
 
+> **你现在在：实现层（How）**
+> - 看什么：模板、状态定义、复杂度、边界、可运行代码  
+> - 暂时不看：大量题面信号识别与路线分流  
+> - 下一站：`combo.md`（选型层）
+
+---
+
+## 内容边界（先看这段，避免混读）
+
+`algorithm.md` 只做一件事：**教你把算法写出来**。
+
+- 这里重点是：定义状态、推导转移、模板结构、复杂度、边界处理、代码实现
+- 这里不重点展开：题面信号识别、多套路选型决策（这些放在 `combo.md`）
+
+一句话：
+- `algorithm.md` = **实现手册（How）**
+- `combo.md` = **选型手册（When/Why）**
+
 ---
 
 ## Day 1：双指针与滑动窗口
@@ -12,13 +30,19 @@
 
 双指针不是一种算法，而是一种**遍历策略**——用两个指针代替两层循环，把 O(n²) 降到 O(n)。
 
-三种基本模式：
+两大类、三种模式：
 
 ```
-  相向双指针:    l →  ←  r     (两端向中间靠拢)
-  同向双指针:    l →  r →      (同方向，不同速度)
-  快慢指针:      slow → fast →→ (链表中，Day2 细讲)
+  ① 相向双指针:  l →    ← r    两端向中间靠拢
+  ② 同向双指针:  l →  r →      同方向前进
+      ├─ 读写指针: w(写) r(读)   步长都是 1，但推进条件不同（数组去重、移除元素）
+      └─ 快慢指针: slow → fast →→  步长不同（1 vs 2），靠速度差产生信息（链表判环、找中点）
 ```
+
+> **同向双指针**是大类，**快慢指针**是其中的特例。
+> 区别：读写指针在**数组**上用，两个都走1步，slow 按条件推进；
+> 快慢指针在**链表**上用，步长 1 vs 2，靠速度差让两者相遇。
+> Day 1 讲数组上的读写指针和滑动窗口，Day 2 讲链表上的快慢指针。
 
 ### 1.2 相向双指针
 
@@ -163,27 +187,74 @@ func lengthOfLongestSubstring(s string) int {
 
 #### 固定长度窗口
 
+窗口大小始终为 k，右边进一个、左边出一个，窗口像"传送带"一样平移。
+
+**典型题：LeetCode 643 — 子数组最大平均数 I**
+
+> 给定数组 nums 和整数 k，找长度为 k 的连续子数组的最大平均值。
+
+```
+  nums = [1, 12, -5, -6, 50, 3],  k = 4
+
+  初始窗口 [1, 12, -5, -6]  sum = 2
+  
+  右移一步：+50, -1  → [12, -5, -6, 50]  sum = 51  ← 最大
+  右移一步：+3, -12  → [-5, -6, 50, 3]   sum = 42
+
+  答案：51 / 4 = 12.75
+```
+
+每次移动只做一次加法和一次减法，不需要重新求和——这就是固定窗口的核心优势。
+
+**模板**：
+
 ```go
-// 窗口大小固定为 k
-sum := 0
-for i := 0; i < k; i++ { sum += nums[i] }  // 初始窗口
-maxSum := sum
-for r := k; r < len(nums); r++ {
-    sum += nums[r] - nums[r-k]  // 右边进，左边出
-    if sum > maxSum { maxSum = sum }
+func findMaxAverage(nums []int, k int) float64 {
+    sum := 0
+    for i := 0; i < k; i++ {
+        sum += nums[i]
+    }
+    maxSum := sum
+    for r := k; r < len(nums); r++ {
+        sum += nums[r] - nums[r-k] // 右边进，左边出
+        if sum > maxSum {
+            maxSum = sum
+        }
+    }
+    return float64(maxSum) / float64(k)
 }
 ```
+
+**与可变窗口的区别**：
+
+| | 固定窗口 | 可变窗口 |
+|---|---|---|
+| 窗口大小 | 始终 = k | 动态伸缩 |
+| 左指针移动 | 每步必移（r-k 位置） | 仅在不合法时收缩 |
+| 典型题 | 最大平均数、定长子串匹配 | 最长无重复子串、最小覆盖子串 |
 
 ### 1.5 二分查找（补充）
 
 有序数组上的经典算法，Day 1 适合一并掌握。
 
+**典型题：LeetCode 704 — 二分查找**
+
+> 给定有序数组 nums 和目标值 target，找到 target 的下标，不存在返回 -1。
+
+```
+  nums = [1, 3, 5, 7, 9], target = 7
+
+  l=0, r=4: mid=2, nums[2]=5 < 7  → l=3
+  l=3, r=4: mid=3, nums[3]=7 == 7 → 找到！返回 3
+```
+
+**模板**：
+
 ```go
-// 标准二分：查找 target 的下标，不存在返回 -1
 func binarySearch(nums []int, target int) int {
     l, r := 0, len(nums)-1
     for l <= r {
-        mid := l + (r-l)/2     // 防溢出
+        mid := l + (r-l)/2
         if nums[mid] == target {
             return mid
         }
@@ -279,6 +350,27 @@ func reverseList(head *ListNode) *ListNode {
 
 ### 2.3 合并两个有序链表
 
+**典型题：LeetCode 21 — 合并两个有序链表**
+
+> 将两个升序链表合并为一个新的升序链表。
+
+```
+  l1: 1 → 3 → 5
+  l2: 2 → 4 → 6
+
+  dummy → ?
+  比较 1 vs 2: 选 1  → dummy → 1
+  比较 3 vs 2: 选 2  → dummy → 1 → 2
+  比较 3 vs 4: 选 3  → dummy → 1 → 2 → 3
+  比较 5 vs 4: 选 4  → dummy → 1 → 2 → 3 → 4
+  比较 5 vs 6: 选 5  → dummy → 1 → 2 → 3 → 4 → 5
+  l1 空了，接上 l2 剩余 → dummy → 1 → 2 → 3 → 4 → 5 → 6
+
+  返回 dummy.Next
+```
+
+**模板**：
+
 ```go
 func mergeTwoLists(l1, l2 *ListNode) *ListNode {
     dummy := &ListNode{}
@@ -308,6 +400,26 @@ func findMiddle(head *ListNode) *ListNode {
     }
     return slow  // 奇数: 正中间; 偶数: 中间偏右
 }
+```
+
+**偶数长度时 fast 变成 nil，怎么处理？**
+
+这是**正常结束**，不是异常。关键在于你想返回：
+- **右中点**（默认常用）：`for fast != nil && fast.Next != nil`
+- **左中点**（链表归并切分常用）：`for fast.Next != nil && fast.Next.Next != nil`（先保证 `head != nil`）
+
+例子 `1 -> 2 -> 3 -> 4`：
+
+```text
+右中点写法：
+  初始 slow=1 fast=1
+  一轮后 slow=2 fast=3
+  二轮后 slow=3 fast=nil（正常）=> 返回 3（右中点）
+
+左中点写法：
+  初始 slow=1 fast=1
+  检查 fast.Next.Next 存在，进一轮 slow=2 fast=3
+  下一轮 fast.Next.Next 不存在，停止 => 返回 2（左中点）
 ```
 
 若要偏左（用于链表归并排序的切分）：
@@ -351,6 +463,24 @@ func detectCycle(head *ListNode) *ListNode {
 **本日目标**：掌握栈做匹配和单调栈、BFS 模板、堆做 TopK。
 
 ### 3.1 括号匹配
+
+**典型题：LeetCode 20 — 有效的括号**
+
+> 判断字符串 s 中的括号是否有效（正确闭合）。
+
+```
+  s = "({[]})"
+
+  遍历 '(': 左括号，入栈       栈: [(]
+  遍历 '{': 左括号，入栈       栈: [(, {]
+  遍历 '[': 左括号，入栈       栈: [(, {, []
+  遍历 ']': 右括号，栈顶是 [ ✓ 弹出  栈: [(, {]
+  遍历 '}': 右括号，栈顶是 { ✓ 弹出  栈: [(]
+  遍历 ')': 右括号，栈顶是 ( ✓ 弹出  栈: []
+  栈空 → 有效！
+```
+
+**模板**：
 
 ```go
 func isValid(s string) bool {
@@ -420,6 +550,28 @@ func nextGreaterElement(nums []int) []int {
 
 ### 3.3 BFS 模板
 
+**典型题：图上最短距离（无权）**
+
+> 从起点 0 出发，求到每个节点的最短步数。
+
+```
+  图:  0 — 1 — 3
+       |       |
+       2 ——————4
+
+  BFS 从 0 出发:
+  初始:   队列 [0]       dist = [0, -1, -1, -1, -1]
+  出队 0: 邻居 1,2 入队  dist = [0, 1, 1, -1, -1]
+  出队 1: 邻居 3 入队    dist = [0, 1, 1, 2, -1]
+  出队 2: 邻居 4 入队    dist = [0, 1, 1, 2, 2]
+  出队 3: 邻居 4 已访问  跳过
+  出队 4: 无新邻居
+
+  结果: dist = [0, 1, 1, 2, 2]
+```
+
+**模板**：
+
 ```go
 func bfs(start int, g [][]int) []int {
     n := len(g)
@@ -431,7 +583,7 @@ func bfs(start int, g [][]int) []int {
     for len(q) > 0 {
         u := q[0]; q = q[1:]
         for _, v := range g[u] {
-            if dist[v] == -1 {  // 未访问
+            if dist[v] == -1 {
                 dist[v] = dist[u] + 1
                 q = append(q, v)
             }
@@ -474,8 +626,32 @@ func bfs(start int, g [][]int) []int {
 
 函数参数从根往叶子传信息，类似前序。
 
+**典型题：LeetCode 257 — 二叉树的所有路径**
+
+> 返回所有从根到叶子的路径。
+
+```
+       1
+      / \
+     2   3
+      \
+       5
+
+  paths(1, []):
+    path=[1], 不是叶子
+    ├─ paths(2, [1]):
+    │   path=[1,2], 不是叶子
+    │   └─ paths(5, [1,2]):
+    │       path=[1,2,5], 是叶子 → 收集 [1,2,5]
+    └─ paths(3, [1]):
+        path=[1,3], 是叶子 → 收集 [1,3]
+
+  结果: [[1,2,5], [1,3]]
+```
+
+**模板**：
+
 ```go
-// 求根到叶子的所有路径
 func paths(root *TreeNode, path []int, res *[][]int) {
     if root == nil { return }
     path = append(path, root.Val)
@@ -492,8 +668,28 @@ func paths(root *TreeNode, path []int, res *[][]int) {
 
 函数返回值从叶子往根汇总，类似后序。
 
+**典型题：LeetCode 543 — 二叉树的直径**
+
+> 求任意两节点间最长路径的边数。
+
+```
+       1
+      / \
+     2   3
+    / \
+   4   5
+
+  diameter(4)=0, diameter(5)=0
+  diameter(2): l=1, r=1 → ans=max(ans,1+1)=2, return 1+max(1,1)=2
+  diameter(3): l=0, r=0 → ans=max(2,0)=2, return 1
+  diameter(1): l=2, r=1 → ans=max(2,2+1)=3, return 1+max(2,1)=3
+
+  答案 ans=3（路径 4→2→1→3）
+```
+
+**模板**：
+
 ```go
-// 求树的高度
 func height(root *TreeNode) int {
     if root == nil { return 0 }
     return 1 + max(height(root.Left), height(root.Right))
@@ -512,8 +708,32 @@ func diameter(root *TreeNode) int {
 
 #### 模式三：分治（把问题拆给左右子树）
 
+**典型题：LeetCode 105 — 从前序与中序遍历构造二叉树**
+
+> 给定 preorder 和 inorder，还原二叉树。
+
+```
+  preorder = [3, 9, 20, 15, 7]
+  inorder  = [9, 3, 15, 20, 7]
+
+  前序第一个 3 是根
+  在中序中找到 3 → 左边 [9] 是左子树，右边 [15,20,7] 是右子树
+
+  递归左: pre=[9], in=[9] → 叶子 9
+  递归右: pre=[20,15,7], in=[15,20,7]
+    根=20, 左=[15], 右=[7]
+
+  结果:
+       3
+      / \
+     9   20
+        / \
+       15   7
+```
+
+**模板**：
+
 ```go
-// 合并两棵 BST 的某个操作、构建树等
 func buildTree(preorder, inorder []int) *TreeNode {
     if len(preorder) == 0 { return nil }
     root := &TreeNode{Val: preorder[0]}
@@ -527,6 +747,26 @@ func buildTree(preorder, inorder []int) *TreeNode {
 ### 4.2 BST 常见操作
 
 #### 验证 BST
+
+**典型题：LeetCode 98 — 验证二叉搜索树**
+
+> 判断一棵二叉树是否是合法的 BST。
+
+```
+       5
+      / \
+     1   7
+        / \
+       4   8     ← 4 < 5，出现在右子树中，非法！
+
+  check(5, -∞, +∞):
+    check(1, -∞, 5): 1 在 (-∞,5) ✓
+    check(7, 5, +∞):
+      check(4, 5, 7): 4 ≤ 5 → false ✗
+  返回 false
+```
+
+**模板**：
 
 ```go
 func isValidBST(root *TreeNode) bool {
@@ -664,6 +904,27 @@ func permute(nums []int) [][]int {
 
 #### 组合（选 k 个，顺序无关）
 
+**典型题：LeetCode 77 — 组合**
+
+> 从 1..n 中选 k 个数，返回所有组合。
+
+```
+  n=4, k=2
+
+  dfs(start=1):
+    选 1 → dfs(start=2):
+      选 2 → [1,2] ✓  |  选 3 → [1,3] ✓  |  选 4 → [1,4] ✓
+    选 2 → dfs(start=3):
+      选 3 → [2,3] ✓  |  选 4 → [2,4] ✓
+    选 3 → dfs(start=4):
+      选 4 → [3,4] ✓
+
+  结果: [1,2] [1,3] [1,4] [2,3] [2,4] [3,4]
+  关键: 从 start 开始往后选，避免重复（[2,1] 不会出现）
+```
+
+**模板**：
+
 ```go
 func combine(n, k int) [][]int {
     var res [][]int
@@ -688,6 +949,32 @@ func combine(n, k int) [][]int {
 
 #### 子集（枚举所有子集）
 
+**典型题：LeetCode 78 — 子集**
+
+> 返回数组的所有子集（幂集）。
+
+```
+  nums = [1, 2, 3]
+
+  dfs(start=0, path=[]):
+    收集 []
+    选 1 → dfs(1, [1]):
+      收集 [1]
+      选 2 → dfs(2, [1,2]):
+        收集 [1,2]
+        选 3 → 收集 [1,2,3]
+      选 3 → 收集 [1,3]
+    选 2 → dfs(2, [2]):
+      收集 [2]
+      选 3 → 收集 [2,3]
+    选 3 → 收集 [3]
+
+  结果: [] [1] [1,2] [1,2,3] [1,3] [2] [2,3] [3]
+  关键: 每个递归节点都收集一次（不像组合只在叶子收集）
+```
+
+**模板**：
+
 ```go
 func subsets(nums []int) [][]int {
     var res [][]int
@@ -711,8 +998,32 @@ func subsets(nums []int) [][]int {
 
 剪枝 = 提前排除不可能的分支，减少递归次数。
 
+**典型题：LeetCode 39 — 组合总和**
+
+> 从 candidates 中选数（可重复），使和为 target。
+
+```
+  candidates = [2, 3, 5], target = 7（已排序）
+
+  dfs(start=0, remain=7):
+    选 2 → remain=5:
+      选 2 → remain=3:
+        选 2 → remain=1: 2>1 剪枝 ✂
+        选 3 → remain=0 → 收集 [2,2,3] ✓
+      选 3 → remain=2:
+        选 3 → 3>2 剪枝 ✂
+      选 5 → remain=0 → 收集 [2,5] ✓
+    选 3 → remain=4:
+      选 3 → remain=1: 3>1 剪枝 ✂
+    选 5 → remain=2: 5>2 剪枝 ✂
+
+  结果: [2,2,3] [2,5]
+  排序 + "candidates[i]>remain → break" 避免了大量无效分支
+```
+
+**模板**：
+
 ```go
-// 组合总和：从 candidates 中选数使和为 target（可重复选）
 func combinationSum(candidates []int, target int) [][]int {
     sort.Ints(candidates)  // 排序以便剪枝
     var res [][]int
@@ -738,7 +1049,33 @@ func combinationSum(candidates []int, target int) [][]int {
 
 ### 5.5 网格 DFS
 
-二维网格上的连通块问题（如岛屿数量），本质是四方向 DFS。
+**典型题：LeetCode 200 — 岛屿数量**
+
+> 二维网格中 '1' 是陆地，'0' 是水，求岛屿数量。
+
+```
+  grid:
+  1 1 0 0
+  1 0 0 0
+  0 0 1 0
+  0 0 0 1
+
+  扫描 (0,0)='1' → DFS 感染整片:
+    (0,0)→'0', (0,1)→'0', (1,0)→'0'
+    岛屿 +1 → count=1
+
+  继续扫描, (2,2)='1' → DFS:
+    (2,2)→'0'
+    岛屿 +1 → count=2
+
+  继续扫描, (3,3)='1' → DFS:
+    (3,3)→'0'
+    岛屿 +1 → count=3
+
+  答案: 3
+```
+
+**模板**：
 
 ```go
 var dirs = [4][2]int{{1,0},{-1,0},{0,1},{0,-1}}
@@ -748,7 +1085,7 @@ func dfs(grid [][]byte, i, j int) {
         return
     }
     if grid[i][j] != '1' { return }
-    grid[i][j] = '0'  // 标记已访问
+    grid[i][j] = '0'  // 标记已访问（"沉岛"）
     for _, d := range dirs {
         dfs(grid, i+d[0], j+d[1])
     }
@@ -890,6 +1227,26 @@ func longestCommonSubsequence(text1, text2 string) int {
 
 #### 零钱兑换（完全背包变体）
 
+**典型题：LeetCode 322 — 零钱兑换**
+
+> 用最少的硬币凑出 amount，硬币可重复选。
+
+```
+  coins = [1, 2, 5], amount = 11
+
+  dp[j] = 凑出金额 j 的最少硬币数
+  初始: dp[0]=0, 其余=∞
+
+  遍历 coin=1: dp[1]=1  dp[2]=2  dp[3]=3  ... dp[11]=11
+  遍历 coin=2: dp[2]=1  dp[3]=2  dp[4]=2  dp[5]=3  ...
+  遍历 coin=5: dp[5]=1  dp[6]=2  dp[7]=2  dp[10]=2 dp[11]=3
+
+  dp = [0, 1, 1, 2, 2, 1, 2, 2, 3, 3, 2, 3]
+  答案: dp[11] = 3  (5+5+1)
+```
+
+**模板**：
+
 ```go
 func coinChange(coins []int, amount int) int {
     dp := make([]int, amount+1)
@@ -1015,6 +1372,24 @@ func topologicalSortDFS(n int, g [][]int) []int {
 
 #### 连通分量数
 
+**典型题：LeetCode 323 — 无向图中连通分量的数目**
+
+> 给定 n 个节点和边列表，求连通分量数。
+
+```
+  n=5, edges=[[0,1],[1,2],[3,4]]
+
+  初始: 每个点自成一组, count=5
+  Union(0,1): 0-1 合并, count=4
+  Union(1,2): 1-2 合并(Find(1)=0, Find(2)=2), count=3
+  Union(3,4): 3-4 合并, count=2
+
+  分组: {0,1,2} 和 {3,4}
+  答案: count=2
+```
+
+**模板**：
+
 ```go
 func countComponents(n int, edges [][]int) int {
     uf := NewUnionFind(n)
@@ -1027,14 +1402,31 @@ func countComponents(n int, edges [][]int) int {
 
 #### 判断图是否为树
 
-树 = 连通 + 无环 = 连通 + 边数 == n-1
+**典型题：LeetCode 261 — 以图判树**
+
+> 给定 n 个节点和边列表，判断是否能构成一棵树（连通 + 无环）。
+
+```
+  n=5, edges=[[0,1],[0,2],[0,3],[1,4]]
+
+  检查: 边数=4 == n-1=4 ✓（边数不对直接 false）
+  Union(0,1): count=4
+  Union(0,2): count=3
+  Union(0,3): count=2
+  Union(1,4): count=1
+  count==1 → true，是树 ✓
+
+  反例: edges=[[0,1],[1,2],[2,0]] → 边数=3, n-1=2, 3≠2 → false
+```
+
+**模板**：
 
 ```go
 func validTree(n int, edges [][]int) bool {
     if len(edges) != n-1 { return false }
     uf := NewUnionFind(n)
     for _, e := range edges {
-        if uf.Connected(e[0], e[1]) { return false }  // 加边前已连通→有环
+        if uf.Connected(e[0], e[1]) { return false }
         uf.Union(e[0], e[1])
     }
     return uf.count == 1

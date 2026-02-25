@@ -12,6 +12,8 @@
 
 ## Day 1
 
+> 实时增量题池：请在本日步骤栏打开「实时题池」。
+
 ### 例题 1：两数之和 II（有序数组）— LeetCode 167
 
 **题意**：有序数组找两数之和等于 target，返回两数下标（从 1 开始）。
@@ -110,6 +112,8 @@ func lengthOfLongestSubstring(s string) int {
 
 ## Day 2
 
+> 实时增量题池：请在本日步骤栏打开「实时题池」。
+
 ### 例题 1：反转链表 — LeetCode 206
 
 **题意**：反转单链表。
@@ -204,6 +208,8 @@ func mergeTwoLists(l1 *ListNode, l2 *ListNode) *ListNode {
 ---
 
 ## Day 3
+
+> 实时增量题池：请在本日步骤栏打开「实时题池」。
 
 ### 例题 1：有效括号 — LeetCode 20
 
@@ -308,6 +314,8 @@ func findKthLargest(nums []int, k int) int {
 
 ## Day 4
 
+> 实时增量题池：请在本日步骤栏打开「实时题池」。
+
 ### 例题 1：二叉树最大深度 — LeetCode 104
 
 **题意**：求二叉树最大深度。
@@ -398,6 +406,8 @@ func isValidBST(root *TreeNode) bool {
 ---
 
 ## Day 5
+
+> 实时增量题池：请在本日步骤栏打开「实时题池」。
 
 ### 例题 1：子集 — LeetCode 78
 
@@ -509,6 +519,8 @@ func numIslands(grid [][]byte) int {
 
 ## Day 6
 
+> 实时增量题池：请在本日步骤栏打开「实时题池」。
+
 ### 例题 1：爬楼梯 — LeetCode 70
 
 **题意**：每次可爬 1 或 2 阶，到 n 阶有多少种方法。
@@ -607,6 +619,8 @@ func lengthOfLIS(nums []int) int {
 ---
 
 ## Day 7
+
+> 实时增量题池：请在本日步骤栏打开「实时题池」。
 
 ### 例题 1：省份数量（并查集）— LeetCode 547
 
