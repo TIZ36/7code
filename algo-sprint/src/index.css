@@ -52,6 +52,9 @@
 
 :root[data-theme='light'] .nav-btn {
   background: #ffffff;
+  color: #1f2937;
+  border-color: #d1d5db;
+  font-weight: 500;
 }
 
 :root[data-theme='light'] .done-toast {
@@ -103,13 +106,63 @@
 
 :root[data-theme='light'] .reset-btn {
   background: #ffffff;
-  color: #334155;
+  color: #1f2937;
   border-color: #d1d5db;
+  font-weight: 500;
 }
 
 :root[data-theme='light'] .reset-btn:hover {
   color: #111827;
   border-color: #94a3b8;
+  background: #f8fafc;
+}
+
+:root[data-theme='light'] .step-tab {
+  background: #ffffff;
+  color: #1f2937;
+  border-color: #d1d5db;
+}
+
+:root[data-theme='light'] .step-tab:hover {
+  color: #2563eb;
+  border-color: #93c5fd;
+  background: #eff6ff;
+}
+
+:root[data-theme='light'] .step-tab.active {
+  background: #2563eb;
+  border-color: #2563eb;
+  color: #ffffff;
+}
+
+:root[data-theme='light'] .step-tab.done {
+  color: #15803d;
+  border-color: #86efac;
+}
+
+:root[data-theme='light'] .day-item {
+  color: #1f2937;
+}
+
+:root[data-theme='light'] .day-sub {
+  color: #64748b;
+}
+
+:root[data-theme='light'] .day-item.done {
+  color: #15803d;
+}
+
+:root[data-theme='light'] .day-item.active .day-title {
+  color: #2563eb;
+}
+
+:root[data-theme='light'] .day-item.active .day-sub {
+  color: #2563eb;
+  opacity: 0.9;
+}
+
+:root[data-theme='light'] .theme-switcher-option {
+  color: #64748b;
 }
 
 :root[data-theme='light'] .nav-next {
