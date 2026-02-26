@@ -189,7 +189,7 @@ func lengthOfLongestSubstring(s string) int {
 
 窗口大小始终为 k，右边进一个、左边出一个，窗口像"传送带"一样平移。
 
-**典型题：LeetCode 643 — 子数组最大平均数 I**
+**典型题：[LeetCode 643 子数组最大平均数 I](https://leetcode.com/problems/maximum-average-subarray-i/)**
 
 > 给定数组 nums 和整数 k，找长度为 k 的连续子数组的最大平均值。
 
@@ -237,7 +237,7 @@ func findMaxAverage(nums []int, k int) float64 {
 
 有序数组上的经典算法，Day 1 适合一并掌握。
 
-**典型题：LeetCode 704 — 二分查找**
+**典型题：[LeetCode 704 二分查找](https://leetcode.com/problems/binary-search/)**
 
 > 给定有序数组 nums 和目标值 target，找到 target 的下标，不存在返回 -1。
 
@@ -350,7 +350,7 @@ func reverseList(head *ListNode) *ListNode {
 
 ### 2.3 合并两个有序链表
 
-**典型题：LeetCode 21 — 合并两个有序链表**
+**典型题：[LeetCode 21 合并两个有序链表](https://leetcode.com/problems/merge-two-sorted-lists/)**
 
 > 将两个升序链表合并为一个新的升序链表。
 
@@ -460,27 +460,21 @@ func detectCycle(head *ListNode) *ListNode {
 
 ## Day 3：栈、队列与堆的算法应用
 
-**本日目标**：掌握栈做匹配和单调栈、BFS 模板、堆做 TopK。
+**本日目标**：掌握栈做匹配和单调栈、BFS 模板、堆做 TopK、单调双端队列。
 
-### 3.1 括号匹配
+---
 
-**典型题：LeetCode 20 — 有效的括号**
+### 3.1 栈的应用
 
-> 判断字符串 s 中的括号是否有效（正确闭合）。
+#### 括号匹配 — [LC20 有效括号](https://leetcode.com/problems/valid-parentheses/)
+
+| 问题 | 信号 | 选型 | 套路 |
+|------|------|------|------|
+| [LC20](https://leetcode.com/problems/valid-parentheses/) 有效括号 | 成对、最近配对、嵌套 | 栈 LIFO = 最近未匹配 | 左入栈；右看栈顶→匹配则 pop；最后栈空 |
 
 ```
-  s = "({[]})"
-
-  遍历 '(': 左括号，入栈       栈: [(]
-  遍历 '{': 左括号，入栈       栈: [(, {]
-  遍历 '[': 左括号，入栈       栈: [(, {, []
-  遍历 ']': 右括号，栈顶是 [ ✓ 弹出  栈: [(, {]
-  遍历 '}': 右括号，栈顶是 { ✓ 弹出  栈: [(]
-  遍历 ')': 右括号，栈顶是 ( ✓ 弹出  栈: []
-  栈空 → 有效！
+s="({[]})"  →  '('入  '{'入  '['入  ']' pop  '}' pop  ')' pop  → 栈空 ✓
 ```
-
-**模板**：
 
 ```go
 func isValid(s string) bool {
@@ -491,9 +485,7 @@ func isValid(s string) bool {
         if b == '(' || b == '[' || b == '{' {
             st = append(st, b)
         } else {
-            if len(st) == 0 || st[len(st)-1] != pair[b] {
-                return false
-            }
+            if len(st) == 0 || st[len(st)-1] != pair[b] { return false }
             st = st[:len(st)-1]
         }
     }
@@ -501,24 +493,67 @@ func isValid(s string) bool {
 }
 ```
 
-### 3.2 单调栈模板
+#### [LC155 最小栈](https://leetcode.com/problems/min-stack/) · [LC232 用栈实现队列](https://leetcode.com/problems/implement-queue-using-stacks/)
 
-**问题**：对每个元素，求右边第一个比它大的元素。
+| 问题 | 信号 | 套路 |
+|------|------|------|
+| [LC155](https://leetcode.com/problems/min-stack/) 最小栈 | O(1) 取最小 | 辅助栈同步存「当前最小」 |
+| [LC232](https://leetcode.com/problems/implement-queue-using-stacks/) 栈实现队列 | 两个栈模拟 FIFO | in 栈入队；出队时若 out 空则 in→out 全倒 |
+
+```go
+// LC155: 辅助栈
+type MinStack struct {
+    st, minSt []int
+}
+func (m *MinStack) Push(x int) {
+    m.st = append(m.st, x)
+    if len(m.minSt)==0 || x <= m.minSt[len(m.minSt)-1] {
+        m.minSt = append(m.minSt, x)
+    }
+}
+func (m *MinStack) GetMin() int { return m.minSt[len(m.minSt)-1] }
+
+// LC232: 双栈
+type MyQueue struct {
+    in, out []int
+}
+func (q *MyQueue) Push(x int) { q.in = append(q.in, x) }
+func (q *MyQueue) Pop() int {
+    if len(q.out)==0 {
+        for len(q.in)>0 {
+            q.out = append(q.out, q.in[len(q.in)-1])
+            q.in = q.in[:len(q.in)-1]
+        }
+    }
+    x := q.out[len(q.out)-1]
+    q.out = q.out[:len(q.out)-1]
+    return x
+}
+```
+
+---
+
+### 3.2 单调栈 — [LC496 下一个更大元素](https://leetcode.com/problems/next-greater-element-i/)
+
+| 问题 | 信号 | 选型 | 套路 |
+|------|------|------|------|
+| [LC496](https://leetcode.com/problems/next-greater-element-i/) 下一个更大 | 右边第一个更大/更小 | 栈存下标、单调递减、遇大则批量结算 | 栈存下标；值单调减；nums[i]>栈顶→pop 写 res |
+
+```
+[2,1,2,4,3]  i=0 push  i=1 push  i=2 pop1→2  i=3 pop2,0→4  i=4 push  → res=[4,2,4,-1,-1]
+```
 
 ```go
 func nextGreaterElement(nums []int) []int {
     n := len(nums)
     res := make([]int, n)
-    for i := range res { res[i] = -1 }  // 默认没有更大的
-    
-    var st []int  // 存下标，栈内对应的值单调递减
-    
+    for i := range res { res[i] = -1 }
+    var st []int
+
     for i := 0; i < n; i++ {
-        // 当前元素比栈顶大 → 栈顶的「下一个更大」就是当前
         for len(st) > 0 && nums[i] > nums[st[len(st)-1]] {
-            top := st[len(st)-1]
+            res[st[len(st)-1]] = nums[i]
             st = st[:len(st)-1]
-            res[top] = nums[i]
         }
         st = append(st, i)
     }
@@ -526,51 +561,55 @@ func nextGreaterElement(nums []int) []int {
 }
 ```
 
-**举例**：
+**变体**：下一个更小→改方向；前一个更大→反向遍历；环形→遍历两遍；**严格/非严格**：题说「更大」用 `>`，说「≥」用 `>=`
+
+---
+
+### 3.3 单调双端队列 — [LC239 滑动窗口最大值](https://leetcode.com/problems/sliding-window-maximum/)
+
+| 问题 | 信号 | 选型 | 套路 |
+|------|------|------|------|
+| [LC239](https://leetcode.com/problems/sliding-window-maximum/) 滑动窗口最大值 | 固定长度窗口、窗口内最值 | 双端队列存下标、队内单调递减 | 队头=当前窗口最大；右移时淘汰过期+队尾小于新元素的 |
 
 ```
-  nums = [2, 1, 2, 4, 3]
-  
-  i=0: 栈空, push 0             栈:[0]     (值:[2])
-  i=1: 1<2, push 1              栈:[0,1]   (值:[2,1])
-  i=2: 2>1, pop 1→res[1]=2      栈:[0]     (值:[2])
-       2>=2, push 2             栈:[0,2]   (值:[2,2])
-  i=3: 4>2, pop 2→res[2]=4      栈:[0]     (值:[2])
-       4>2, pop 0→res[0]=4      栈:[]
-       push 3                   栈:[3]     (值:[4])
-  i=4: 3<4, push 4              栈:[3,4]   (值:[4,3])
-  
-  res = [4, 2, 4, -1, -1]
+nums=[1,3,-1,-3,5,3], k=3
+dq存下标: [1,3,-1]→队头1最大=3 [3,-1,-3]→队头3最大=3 [-1,-3,5]→队头5最大=5 [5,3]→队头5最大=5
 ```
 
-**变体**：
-- **下一个更小**：改比较方向
-- **前一个更大**：从右往左遍历
-- **环形数组**：遍历两遍 `i % n`
-
-### 3.3 BFS 模板
-
-**典型题：图上最短距离（无权）**
-
-> 从起点 0 出发，求到每个节点的最短步数。
-
-```
-  图:  0 — 1 — 3
-       |       |
-       2 ——————4
-
-  BFS 从 0 出发:
-  初始:   队列 [0]       dist = [0, -1, -1, -1, -1]
-  出队 0: 邻居 1,2 入队  dist = [0, 1, 1, -1, -1]
-  出队 1: 邻居 3 入队    dist = [0, 1, 1, 2, -1]
-  出队 2: 邻居 4 入队    dist = [0, 1, 1, 2, 2]
-  出队 3: 邻居 4 已访问  跳过
-  出队 4: 无新邻居
-
-  结果: dist = [0, 1, 1, 2, 2]
+```go
+func maxSlidingWindow(nums []int, k int) []int {
+    var dq []int
+    var res []int
+    for i := 0; i < len(nums); i++ {
+        for len(dq) > 0 && dq[0] <= i-k { dq = dq[1:] }  // 过期
+        for len(dq) > 0 && nums[dq[len(dq)-1]] < nums[i] { dq = dq[:len(dq)-1] }  // 队尾小于当前
+        dq = append(dq, i)
+        if i >= k-1 { res = append(res, nums[dq[0]]) }
+    }
+    return res
+}
 ```
 
-**模板**：
+---
+
+### 3.4 BFS — [LC542 01 矩阵](https://leetcode.com/problems/01-matrix/) · [LC994 腐烂的橘子](https://leetcode.com/problems/rotting-oranges/)
+
+| 问题 | 信号 | 选型 | 套路 |
+|------|------|------|------|
+| [LC542](https://leetcode.com/problems/01-matrix/)/[LC994](https://leetcode.com/problems/rotting-oranges/) 最短步数 | 最短、最少操作、层序、扩散 | 队列 FIFO = 一层一层扩展；第一次到达=最短 | 入队时标记；出队→扩邻居→未访问则 dist+1 入队 |
+
+**LC542 要点**：每个格子输出「到最近 0 的距离」。0 的格子输出 0；1 的格子输出步数。**多源 BFS**：所有 0 同时入队作为起点，往外扩散，第一次到达某个 1 时的步数即该格答案。
+
+```
+输入 [[1,0,0],[0,0,0],[0,0,0]]  →  左上角是 1，相邻有 0，距离 1  →  输出 [0][0]=1 ✓
+输入 [[0,0,0],[0,1,0],[0,0,0]]  →  中心是 1，四周都是 0，距离 1  →  输出 [1][1]=1 ✓
+```
+
+**单源 BFS 示例**（图）：
+
+```
+图 0-1-3  |  初始[0] → 出0入1,2 → 出1入3 → 出2入4 → 出3,4  → dist=[0,1,1,2,2]
+```
 
 ```go
 func bfs(start int, g [][]int) []int {
@@ -578,7 +617,6 @@ func bfs(start int, g [][]int) []int {
     dist := make([]int, n)
     for i := range dist { dist[i] = -1 }
     dist[start] = 0
-    
     q := []int{start}
     for len(q) > 0 {
         u := q[0]; q = q[1:]
@@ -593,26 +631,173 @@ func bfs(start int, g [][]int) []int {
 }
 ```
 
-**BFS 的本质**：从起点一层一层扩展，第一次到达某个节点时的步数就是最短步数（无权图）。
+**分层**：`for sz:=len(q); sz>0; sz--` 内层处理一层
 
-### 3.4 堆做 TopK
+**多源 BFS**（[LC542](https://leetcode.com/problems/01-matrix/)、[LC994](https://leetcode.com/problems/rotting-oranges/)）：所有 0（或所有起点）同时入队，dist 初始为 0，其余同单源
 
-**第 K 大的元素**：维护大小为 K 的小顶堆。
+---
+
+#### [LC994 腐烂的橘子](https://leetcode.com/problems/rotting-oranges/) 详解
+
+**题意**：0=空，1=新鲜，2=腐烂。每分钟腐烂的橘子会感染相邻新鲜橘子。求全部腐烂的最少分钟数，不可能则 -1。
+
+**思路**：所有腐烂的橘子入队，多源 BFS 扩散；每扩散一层 = 过 1 分钟。
+
+**停止条件**：
+
+| 何时停止 | 含义 |
+|----------|------|
+| 队列自然为空 | 没有新的橘子可以继续扩散，BFS 结束 |
+| 无需额外「超时」或「轮数上限」 | 能扩散的都会入队，扩散完队列必空 |
+
+**如何判断成功**：BFS 结束后，遍历网格，若还有 `grid[i][j]==1`（新鲜）→ 说明该格子无法被任何腐烂橘子到达 → 返回 -1。
+
+**时间计数**：用**分层 BFS**。每轮 `for sz:=len(q); sz>0; sz--` 处理「当前分钟」内所有新腐烂的格子；该轮结束后 `minute++`。注意：第 0 分钟是初始状态，第一轮扩散完成才算第 1 分钟。
 
 ```
-  nums = [3, 1, 4, 1, 5, 9], K=3
-  
-  遍历 3: 堆 [3]           (size < K, 直接入)
-  遍历 1: 堆 [1, 3]        (size < K)
-  遍历 4: 堆 [1, 3, 4]     (size == K)
-  遍历 1: 1 < 堆顶1 → 跳过
-  遍历 5: 5 > 堆顶1 → 弹出1，入5 → 堆 [3, 4, 5]
-  遍历 9: 9 > 堆顶3 → 弹出3，入9 → 堆 [4, 5, 9]
-  
-  堆顶 4 就是第 3 大的元素
+例：[[2,1,1],[1,1,0],[0,1,1]]
+初始：所有 2 入队，minute=0
+第1分钟：扩散到相邻的 1，队列变空后又有一批新入队… 分层处理
+第2分钟：继续…
+队列空 → 检查是否还有 1 → 无则返回 minute，有则 -1
 ```
 
-**为什么用小顶堆？** 小顶堆的堆顶是堆中最小的。维护 K 个最大值，堆顶就是 K 个中最小的 = 第 K 大。
+```go
+func orangesRotting(grid [][]int) int {
+    m, n := len(grid), len(grid[0])
+    var q [][2]int
+    fresh := 0
+    for i := 0; i < m; i++ {
+        for j := 0; j < n; j++ {
+            if grid[i][j] == 2 {
+                q = append(q, [2]int{i, j})
+            } else if grid[i][j] == 1 {
+                fresh++
+            }
+        }
+    }
+    if fresh == 0 { return 0 }
+
+    minute := 0
+    for len(q) > 0 {
+        sz := len(q)
+        for sz > 0 {
+            cur := q[0]; q = q[1:]
+            sz--
+            for _, d := range [][2]int{{0,1},{1,0},{0,-1},{-1,0}} {
+                ni, nj := cur[0]+d[0], cur[1]+d[1]
+                if ni>=0 && ni<m && nj>=0 && nj<n && grid[ni][nj]==1 {
+                    grid[ni][nj] = 2
+                    fresh--
+                    q = append(q, [2]int{ni, nj})
+                }
+            }
+        }
+        minute++
+    }
+
+    if fresh > 0 { return -1 }
+    return minute - 1  // 最后一轮扩散完队列空，多算了一分钟
+}
+```
+
+> **minute-1 的原因**：最后一轮处理完时队列变空，但 `minute` 又加了一次。实际最后一轮扩散已经完成，所以返回 `minute-1`。若初始就没有腐烂橘子（q 空），不会进循环，返回 0；若有腐烂且全部扩散完，fresh 会变 0。
+
+```go
+// LC542 多源 BFS：所有 0 入队
+func updateMatrix(mat [][]int) [][]int {
+    m, n := len(mat), len(mat[0])
+    dist := make([][]int, m)
+    var q [][2]int
+    for i := 0; i < m; i++ {
+        dist[i] = make([]int, n)
+        for j := 0; j < n; j++ {
+            if mat[i][j] == 0 {
+                q = append(q, [2]int{i, j})
+            } else {
+                dist[i][j] = -1  // 未访问
+            }
+        }
+    }
+    for len(q) > 0 {
+        cur := q[0]; q = q[1:]
+        for _, d := range [][2]int{{0,1},{1,0},{0,-1},{-1,0}} {
+            ni, nj := cur[0]+d[0], cur[1]+d[1]
+            if ni>=0 && ni<m && nj>=0 && nj<n && dist[ni][nj]==-1 {
+                dist[ni][nj] = dist[cur[0]][cur[1]] + 1
+                q = append(q, [2]int{ni, nj})
+            }
+        }
+    }
+    return dist
+}
+```
+
+---
+
+### 3.5 堆 — [LC215 第 K 大](https://leetcode.com/problems/kth-largest-element-in-an-array/) · [LC23 合并 K 个有序链表](https://leetcode.com/problems/merge-k-sorted-lists/)
+
+| 问题 | 信号 | 选型 | 套路 |
+|------|------|------|------|
+| [LC215](https://leetcode.com/problems/kth-largest-element-in-an-array/) 第K大 | TopK、第K大/小 | 堆 O(n log K)；小顶堆顶=K个最小=第K大 | 第K大→小顶堆K个；满→新>顶则替换 |
+
+```
+[3,1,4,1,5,9] K=3  →  堆[1,3,4]→5>1→[3,4,5]→9>3→[4,5,9]  → 顶4=第3大
+```
+
+```go
+// import "container/heap"
+func findKthLargest(nums []int, k int) int {
+    h := &MinHeap{}
+    for _, v := range nums {
+        if h.Len() < k {
+            heap.Push(h, v)
+        } else if v > (*h)[0] {
+            heap.Pop(h)
+            heap.Push(h, v)
+        }
+    }
+    return (*h)[0]
+}
+
+type MinHeap []int
+func (h MinHeap) Len() int           { return len(h) }
+func (h MinHeap) Less(i, j int) bool { return h[i] < h[j] }
+func (h MinHeap) Swap(i, j int)      { h[i], h[j] = h[j], h[i] }
+func (h *MinHeap) Push(x any)        { *h = append(*h, x.(int)) }
+func (h *MinHeap) Pop() any {
+    old := *h
+    n := len(old)
+    x := old[n-1]
+    *h = old[:n-1]
+    return x
+}
+```
+
+#### 合并 K 路有序 — [LC23 合并 K 个有序链表](https://leetcode.com/problems/merge-k-sorted-lists/)
+
+| 问题 | 信号 | 套路 |
+|------|------|------|
+| [LC23](https://leetcode.com/problems/merge-k-sorted-lists/) 合并 K 个有序链表 | K 路有序、取当前最小 | 小顶堆存每路头节点；pop 最小→接上→该路下一节点入堆 |
+
+```go
+func mergeKLists(lists []*ListNode) *ListNode {
+    h := &NodeHeap{}
+    for _, l := range lists {
+        if l != nil { heap.Push(h, l) }
+    }
+    dummy := &ListNode{}
+    cur := dummy
+    for h.Len() > 0 {
+        n := heap.Pop(h).(*ListNode)
+        cur.Next = n
+        cur = cur.Next
+        if n.Next != nil { heap.Push(h, n.Next) }
+    }
+    return dummy.Next
+}
+// NodeHeap 需实现 heap.Interface，Less 比较 Val
+```
 
 ---
 
@@ -626,7 +811,7 @@ func bfs(start int, g [][]int) []int {
 
 函数参数从根往叶子传信息，类似前序。
 
-**典型题：LeetCode 257 — 二叉树的所有路径**
+**典型题：[LeetCode 257 二叉树的所有路径](https://leetcode.com/problems/binary-tree-paths/)**
 
 > 返回所有从根到叶子的路径。
 
@@ -668,7 +853,7 @@ func paths(root *TreeNode, path []int, res *[][]int) {
 
 函数返回值从叶子往根汇总，类似后序。
 
-**典型题：LeetCode 543 — 二叉树的直径**
+**典型题：[LeetCode 543 二叉树的直径](https://leetcode.com/problems/diameter-of-binary-tree/)**
 
 > 求任意两节点间最长路径的边数。
 
@@ -708,7 +893,7 @@ func diameter(root *TreeNode) int {
 
 #### 模式三：分治（把问题拆给左右子树）
 
-**典型题：LeetCode 105 — 从前序与中序遍历构造二叉树**
+**典型题：[LeetCode 105 从前序与中序遍历构造二叉树](https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/)**
 
 > 给定 preorder 和 inorder，还原二叉树。
 
@@ -748,7 +933,7 @@ func buildTree(preorder, inorder []int) *TreeNode {
 
 #### 验证 BST
 
-**典型题：LeetCode 98 — 验证二叉搜索树**
+**典型题：[LeetCode 98 验证二叉搜索树](https://leetcode.com/problems/validate-binary-search-tree/)**
 
 > 判断一棵二叉树是否是合法的 BST。
 
@@ -904,7 +1089,7 @@ func permute(nums []int) [][]int {
 
 #### 组合（选 k 个，顺序无关）
 
-**典型题：LeetCode 77 — 组合**
+**典型题：[LeetCode 77 组合](https://leetcode.com/problems/combinations/)**
 
 > 从 1..n 中选 k 个数，返回所有组合。
 
@@ -949,7 +1134,7 @@ func combine(n, k int) [][]int {
 
 #### 子集（枚举所有子集）
 
-**典型题：LeetCode 78 — 子集**
+**典型题：[LeetCode 78 子集](https://leetcode.com/problems/subsets/)**
 
 > 返回数组的所有子集（幂集）。
 
@@ -998,7 +1183,7 @@ func subsets(nums []int) [][]int {
 
 剪枝 = 提前排除不可能的分支，减少递归次数。
 
-**典型题：LeetCode 39 — 组合总和**
+**典型题：[LeetCode 39 组合总和](https://leetcode.com/problems/combination-sum/)**
 
 > 从 candidates 中选数（可重复），使和为 target。
 
@@ -1049,7 +1234,7 @@ func combinationSum(candidates []int, target int) [][]int {
 
 ### 5.5 网格 DFS
 
-**典型题：LeetCode 200 — 岛屿数量**
+**典型题：[LeetCode 200 岛屿数量](https://leetcode.com/problems/number-of-islands/)**
 
 > 二维网格中 '1' 是陆地，'0' 是水，求岛屿数量。
 
@@ -1227,7 +1412,7 @@ func longestCommonSubsequence(text1, text2 string) int {
 
 #### 零钱兑换（完全背包变体）
 
-**典型题：LeetCode 322 — 零钱兑换**
+**典型题：[LeetCode 322 零钱兑换](https://leetcode.com/problems/coin-change/)**
 
 > 用最少的硬币凑出 amount，硬币可重复选。
 
@@ -1372,7 +1557,7 @@ func topologicalSortDFS(n int, g [][]int) []int {
 
 #### 连通分量数
 
-**典型题：LeetCode 323 — 无向图中连通分量的数目**
+**典型题：[LeetCode 323 无向图中连通分量的数目](https://leetcode.com/problems/number-of-connected-components-in-an-undirected-graph/)**
 
 > 给定 n 个节点和边列表，求连通分量数。
 
@@ -1402,7 +1587,7 @@ func countComponents(n int, edges [][]int) int {
 
 #### 判断图是否为树
 
-**典型题：LeetCode 261 — 以图判树**
+**典型题：[LeetCode 261 以图判树](https://leetcode.com/problems/graph-valid-tree/)**
 
 > 给定 n 个节点和边列表，判断是否能构成一棵树（连通 + 无环）。
 

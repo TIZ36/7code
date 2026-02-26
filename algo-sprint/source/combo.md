@@ -15,18 +15,18 @@
 
 | 题面信号 | → 数据结构 | → 算法模式 | 典型题 |
 |----------|-----------|-----------|--------|
-| 有序数组 + 目标值 | 数组 | 二分 / 相向双指针 | LC167, LC33 |
-| 连续子数组/子串 + 最长/最短 | 数组 + map/计数 | 滑动窗口 | LC3, LC76, LC209 |
-| 所有排列/组合/子集 | 数组 | 回溯 | LC46, LC78, LC39 |
-| 下一个更大/更小 | 栈 | 单调栈 | LC496, LC739 |
-| 合并 K 个有序 / TopK | 堆 | 多路归并 / 堆维护 | LC23, LC215 |
-| 树的深度/路径/属性 | 树 | DFS 递归（前/中/后序） | LC104, LC112, LC236 |
-| 按层输出 / 最短步数 | 队列 | BFS | LC102, LC127 |
-| 是否能 / 方案数 / 最值 + 子序列 | 数组 | DP | LC70, LC300, LC322 |
-| 连通/分组/朋友圈 | 并查集 或 图 | Union-Find / DFS | LC547, LC200 |
-| 依赖/先修/执行顺序 | 图 | 拓扑排序 | LC207, LC210 |
-| 括号/嵌套/匹配 | 栈 | 栈匹配 | LC20, LC32 |
-| 原地/O(1) 空间 | 数组 | 双指针 / 位运算 | LC26, LC283 |
+| 有序数组 + 目标值 | 数组 | 二分 / 相向双指针 | [LC167](https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/), [LC33](https://leetcode.com/problems/search-in-rotated-sorted-array/) |
+| 连续子数组/子串 + 最长/最短 | 数组 + map/计数 | 滑动窗口 | [LC3](https://leetcode.com/problems/longest-substring-without-repeating-characters/), [LC76](https://leetcode.com/problems/minimum-window-substring/), [LC209](https://leetcode.com/problems/minimum-size-subarray-sum/) |
+| 所有排列/组合/子集 | 数组 | 回溯 | [LC46](https://leetcode.com/problems/permutations/), [LC78](https://leetcode.com/problems/subsets/), [LC39](https://leetcode.com/problems/combination-sum/) |
+| 下一个更大/更小 | 栈 | 单调栈 | [LC496](https://leetcode.com/problems/next-greater-element-i/), [LC739](https://leetcode.com/problems/daily-temperatures/) |
+| 合并 K 个有序 / TopK | 堆 | 多路归并 / 堆维护 | [LC23](https://leetcode.com/problems/merge-k-sorted-lists/), [LC215](https://leetcode.com/problems/kth-largest-element-in-an-array/) |
+| 树的深度/路径/属性 | 树 | DFS 递归（前/中/后序） | [LC104](https://leetcode.com/problems/maximum-depth-of-binary-tree/), [LC112](https://leetcode.com/problems/path-sum/), [LC236](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/) |
+| 按层输出 / 最短步数 | 队列 | BFS | [LC102](https://leetcode.com/problems/binary-tree-level-order-traversal/), [LC127](https://leetcode.com/problems/word-ladder/) |
+| 是否能 / 方案数 / 最值 + 子序列 | 数组 | DP | [LC70](https://leetcode.com/problems/climbing-stairs/), [LC300](https://leetcode.com/problems/longest-increasing-subsequence/), [LC322](https://leetcode.com/problems/coin-change/) |
+| 连通/分组/朋友圈 | 并查集 或 图 | Union-Find / DFS | [LC547](https://leetcode.com/problems/number-of-provinces/), [LC200](https://leetcode.com/problems/number-of-islands/) |
+| 依赖/先修/执行顺序 | 图 | 拓扑排序 | [LC207](https://leetcode.com/problems/course-schedule/), [LC210](https://leetcode.com/problems/course-schedule-ii/) |
+| 括号/嵌套/匹配 | 栈 | 栈匹配 | [LC20](https://leetcode.com/problems/valid-parentheses/), [LC32](https://leetcode.com/problems/longest-valid-parentheses/) |
+| 原地/O(1) 空间 | 数组 | 双指针 / 位运算 | [LC26](https://leetcode.com/problems/remove-duplicates-from-sorted-array/), [LC283](https://leetcode.com/problems/move-zeroes/) |
 
 ---
 
@@ -61,14 +61,14 @@ Day 1 不是一个技巧，而是一组“数组题入口组合”。下面 8 �
 
 | 触发信号 | 组合套路 | 为什么是它 | 代表题 |
 |------|------|------|------|
-| 无序数组 + 两数配对 | 哈希表 + 一次遍历 | 一边查补数一边记录，O(n) | LC1 |
-| 有序数组 + 目标和 | 相向双指针 | 单调性支持左右收缩 | LC167 |
+| 无序数组 + 两数配对 | 哈希表 + 一次遍历 | 一边查补数一边记录，O(n) | [LC1](https://leetcode.com/problems/two-sum/) |
+| 有序数组 + 目标和 | 相向双指针 | 单调性支持左右收缩 | [LC167](https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/) |
 | 三数目标和 | 排序 + 固定一位 + 相向双指针 | 降维到“两数和” | LC15 |
-| 原地删除/去重 + O(1) 空间 | 读写双指针（同向） | 读指针扫描，写指针落位 | LC26, LC27, LC283 |
-| 连续区间 + 最长/最短 | 可变滑窗 + 哈希计数 | 右扩左缩维护合法窗口 | LC3, LC76, LC209 |
-| 定长区间最值/平均值 | 固定滑窗 + 滚动和 | 每步 O(1) 更新窗口值 | LC643 |
-| 有序边界（首个/末个满足） | 二分 + 左右边界模板 | 两次二分定位区间 | LC34, LC35 |
-| “最小可行值/最大可行值” | 答案二分 + `check(mid)` | 二分答案空间而非下标 | LC875, LC1011 |
+| 原地删除/去重 + O(1) 空间 | 读写双指针（同向） | 读指针扫描，写指针落位 | [LC26](https://leetcode.com/problems/remove-duplicates-from-sorted-array/), [LC27](https://leetcode.com/problems/remove-element/), [LC283](https://leetcode.com/problems/move-zeroes/) |
+| 连续区间 + 最长/最短 | 可变滑窗 + 哈希计数 | 右扩左缩维护合法窗口 | [LC3](https://leetcode.com/problems/longest-substring-without-repeating-characters/), [LC76](https://leetcode.com/problems/minimum-window-substring/), [LC209](https://leetcode.com/problems/minimum-size-subarray-sum/) |
+| 定长区间最值/平均值 | 固定滑窗 + 滚动和 | 每步 O(1) 更新窗口值 | [LC643](https://leetcode.com/problems/maximum-average-subarray-i/) |
+| 有序边界（首个/末个满足） | 二分 + 左右边界模板 | 两次二分定位区间 | [LC34](https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/), [LC35](https://leetcode.com/problems/search-insert-position/) |
+| “最小可行值/最大可行值” | 答案二分 + `check(mid)` | 二分答案空间而非下标 | [LC875](https://leetcode.com/problems/koko-eating-bananas/), [LC1011](https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/) |
 
 ### 如何选择双指针模式
 
@@ -180,6 +180,7 @@ Day 1 不是一个技巧，而是一组“数组题入口组合”。下面 8 �
   需要「按层扩展」/ 最短步数       →  队列 (BFS)
   需要「动态取最值」/ TopK         →  堆
   需要「窗口内最值」               →  单调双端队列
+  需要 O(1) 取栈最小 / 栈模拟队列  →  辅助栈 / 双栈
 ```
 
 ### 单调栈要点
@@ -198,6 +199,7 @@ Day 1 不是一个技巧，而是一组“数组题入口组合”。下面 8 �
 
 - **是否关心“第几步/第几层”**：关心则分层，不关心则普通队列遍历  
 - **visited 何时标记**：入队时标记（不是出队时）  
+- **多源 BFS**（[LC994 腐烂的橘子](https://leetcode.com/problems/rotting-oranges/)）：多个起点同时入队，其余同单源
 - 具体模板统一见 `algorithm.md` Day 3
 
 **下一站**：→ [practice.md - Day 3](practice.md#day-3) → [quiz.md - Day 3](quiz.md#day-3)

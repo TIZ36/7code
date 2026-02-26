@@ -14,7 +14,7 @@
 
 > 实时增量题池：请在本日步骤栏打开「实时题池」。
 
-### 例题 1：两数之和 II（有序数组）— LeetCode 167
+### 例题 1：[两数之和 II（有序数组）](https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/) — LeetCode 167
 
 **题意**：有序数组找两数之和等于 target，返回两数下标（从 1 开始）。
 
@@ -60,7 +60,7 @@ func twoSum(numbers []int, target int) []int {
 
 ---
 
-### 例题 2：最长无重复字符子串 — LeetCode 3
+### 例题 2：[最长无重复字符子串](https://leetcode.com/problems/longest-substring-without-repeating-characters/) — LeetCode 3
 
 **题意**：求字符串中最长不含重复字符的子串长度。
 
@@ -114,7 +114,7 @@ func lengthOfLongestSubstring(s string) int {
 
 > 实时增量题池：请在本日步骤栏打开「实时题池」。
 
-### 例题 1：反转链表 — LeetCode 206
+### 例题 1：[反转链表](https://leetcode.com/problems/reverse-linked-list/) — LeetCode 206
 
 **题意**：反转单链表。
 
@@ -154,7 +154,7 @@ func reverseList(head *ListNode) *ListNode {
 
 ---
 
-### 例题 2：合并两个有序链表 — LeetCode 21
+### 例题 2：[合并两个有序链表](https://leetcode.com/problems/merge-two-sorted-lists/) — LeetCode 21
 
 **题意**：将两个有序链表合并为一个有序链表。
 
@@ -211,7 +211,7 @@ func mergeTwoLists(l1 *ListNode, l2 *ListNode) *ListNode {
 
 > 实时增量题池：请在本日步骤栏打开「实时题池」。
 
-### 例题 1：有效括号 — LeetCode 20
+### 例题 1：[有效括号](https://leetcode.com/problems/valid-parentheses/) — LeetCode 20
 
 **题意**：判断括号字符串是否有效（成对且顺序正确）。
 
@@ -258,7 +258,7 @@ func isValid(s string) bool {
 
 ---
 
-### 例题 2：数组中的第 K 个最大元素 — LeetCode 215
+### 例题 2：[数组中的第 K 个最大元素](https://leetcode.com/problems/kth-largest-element-in-an-array/) — LeetCode 215
 
 **题意**：找出未排序数组中第 K 大的元素。
 
@@ -316,7 +316,7 @@ func findKthLargest(nums []int, k int) int {
 
 > 实时增量题池：请在本日步骤栏打开「实时题池」。
 
-### 例题 1：二叉树最大深度 — LeetCode 104
+### 例题 1：[二叉树最大深度](https://leetcode.com/problems/maximum-depth-of-binary-tree/) — LeetCode 104
 
 **题意**：求二叉树最大深度。
 
@@ -354,7 +354,7 @@ func max(a, b int) int { if a > b { return a }; return b }
 
 ---
 
-### 例题 2：验证二叉搜索树 — LeetCode 98
+### 例题 2：[验证二叉搜索树](https://leetcode.com/problems/validate-binary-search-tree/) — LeetCode 98
 
 **题意**：判断二叉树是否为 BST。
 
@@ -409,7 +409,7 @@ func isValidBST(root *TreeNode) bool {
 
 > 实时增量题池：请在本日步骤栏打开「实时题池」。
 
-### 例题 1：子集 — LeetCode 78
+### 例题 1：[子集](https://leetcode.com/problems/subsets/) — LeetCode 78
 
 **题意**：求数组的所有子集（幂集）。
 
@@ -455,7 +455,7 @@ func subsets(nums []int) [][]int {
 
 ---
 
-### 例题 2：岛屿数量 — LeetCode 200
+### 例题 2：[岛屿数量](https://leetcode.com/problems/number-of-islands/) — LeetCode 200
 
 **题意**：二维网格，'1' 为陆地，求连通陆地块数。
 
@@ -521,7 +521,7 @@ func numIslands(grid [][]byte) int {
 
 > 实时增量题池：请在本日步骤栏打开「实时题池」。
 
-### 例题 1：爬楼梯 — LeetCode 70
+### 例题 1：[爬楼梯](https://leetcode.com/problems/climbing-stairs/) — LeetCode 70
 
 **题意**：每次可爬 1 或 2 阶，到 n 阶有多少种方法。
 
@@ -562,7 +562,7 @@ func climbStairs(n int) int {
 
 ---
 
-### 例题 2：最长递增子序列 — LeetCode 300
+### 例题 2：[最长递增子序列](https://leetcode.com/problems/longest-increasing-subsequence/) — LeetCode 300
 
 **题意**：求数组最长严格递增子序列长度。
 
@@ -622,7 +622,7 @@ func lengthOfLIS(nums []int) int {
 
 > 实时增量题池：请在本日步骤栏打开「实时题池」。
 
-### 例题 1：省份数量（并查集）— LeetCode 547
+### 例题 1：[省份数量（并查集）](https://leetcode.com/problems/number-of-provinces/) — LeetCode 547
 
 **题意**：n 个城市，isConnected[i][j]=1 表示相连，求省份数（连通分量数）。
 
@@ -684,7 +684,7 @@ func findCircleNum(isConnected [][]int) int {
 
 ---
 
-### 例题 2：课程表（拓扑排序）— LeetCode 207
+### 例题 2：[课程表（拓扑排序）](https://leetcode.com/problems/course-schedule/) — LeetCode 207
 
 **题意**：numCourses 门课，prerequisites 为先修关系，判断能否修完所有课（无环）。
 
