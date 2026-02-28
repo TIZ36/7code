@@ -3,7 +3,7 @@
 > 本文件由 `sync_leetcode.sh` 自动更新。
 > 建议用法：每天主线题之外，再加 1~2 道实时题，避免只会旧题模板。
 
-- 同步时间：`2026-02-25 18:53:22 UTC+08:00`
+- 同步时间：`2026-02-28 10:47:53 UTC+08:00`
 - 题库来源：`https://leetcode.com/api/problems/algorithms/`（已存本地：`source/leetcode_live.json`）
 - 岗位画像：`backend`（可选：backend / ai）
 - 免费题总数：`2928`
