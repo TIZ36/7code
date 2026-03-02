@@ -26,6 +26,9 @@
 
 **本日目标**：掌握双指针的三种模式和滑动窗口的通用模板。
 
+> **阅读约定（例题统一结构）**  
+> 只要出现「典型题/例题」，统一按四段阅读：`题意` → `算法思想` → `思路详解` → `代码`。
+
 ### 1.1 双指针总览
 
 双指针不是一种算法，而是一种**遍历策略**——用两个指针代替两层循环，把 O(n²) 降到 O(n)。
@@ -50,6 +53,16 @@
 
 **典型题：有序数组两数之和**
 
+**题意：**
+
+在有序数组中找到两个数，使它们的和等于目标值。
+
+**算法思想：**
+
+利用有序性做相向双指针收缩：和太大右指针左移，和太小左指针右移。
+
+**思路详解：**
+
 ```
   nums = [1, 3, 5, 7, 9], target = 8
   
@@ -62,7 +75,7 @@
 - 对称地 r 不会跳过 j
 - 因此双指针一定能扫到 (i, j)
 
-**模板**：
+**代码：**
 
 ```go
 func twoSumSorted(nums []int, target int) (int, int) {
@@ -93,6 +106,16 @@ func twoSumSorted(nums []int, target int) (int, int) {
 
 **典型题：原地去重**
 
+**题意：**
+
+在有序数组中原地删除重复元素，并返回去重后的长度。
+
+**算法思想：**
+
+同向双指针（读写指针）：读指针扫描，写指针维护当前“已去重前缀”末尾。
+
+**思路详解：**
+
 ```
   nums = [1, 1, 2, 2, 3]
   
@@ -105,7 +128,7 @@ func twoSumSorted(nums []int, target int) (int, int) {
   返回 w=3，前 3 个元素就是去重后的结果
 ```
 
-**模板**：
+**代码：**
 
 ```go
 func removeDuplicates(nums []int) int {
@@ -191,7 +214,15 @@ func lengthOfLongestSubstring(s string) int {
 
 **典型题：[LeetCode 643 子数组最大平均数 I](https://leetcode.com/problems/maximum-average-subarray-i/)**
 
+**题意：**
+
 > 给定数组 nums 和整数 k，找长度为 k 的连续子数组的最大平均值。
+
+**算法思想：**
+
+固定长度滑窗：维护当前长度为 `k` 的窗口和，平移时执行“右进左出”。
+
+**思路详解：**
 
 ```
   nums = [1, 12, -5, -6, 50, 3],  k = 4
@@ -206,7 +237,7 @@ func lengthOfLongestSubstring(s string) int {
 
 每次移动只做一次加法和一次减法，不需要重新求和——这就是固定窗口的核心优势。
 
-**模板**：
+**代码：**
 
 ```go
 func findMaxAverage(nums []int, k int) float64 {
@@ -239,7 +270,15 @@ func findMaxAverage(nums []int, k int) float64 {
 
 **典型题：[LeetCode 704 二分查找](https://leetcode.com/problems/binary-search/)**
 
+**题意：**
+
 > 给定有序数组 nums 和目标值 target，找到 target 的下标，不存在返回 -1。
+
+**算法思想：**
+
+利用区间单调性二分缩小搜索区间，每次排除一半不可能区间。
+
+**思路详解：**
 
 ```
   nums = [1, 3, 5, 7, 9], target = 7
@@ -248,7 +287,7 @@ func findMaxAverage(nums []int, k int) float64 {
   l=3, r=4: mid=3, nums[3]=7 == 7 → 找到！返回 3
 ```
 
-**模板**：
+**代码：**
 
 ```go
 func binarySearch(nums []int, target int) int {
@@ -352,7 +391,15 @@ func reverseList(head *ListNode) *ListNode {
 
 **典型题：[LeetCode 21 合并两个有序链表](https://leetcode.com/problems/merge-two-sorted-lists/)**
 
+**题意：**
+
 > 将两个升序链表合并为一个新的升序链表。
+
+**算法思想：**
+
+`dummy` + 双指针：每次接入两个头结点中更小的那个，最后拼接剩余链表。
+
+**思路详解：**
 
 ```
   l1: 1 → 3 → 5
@@ -369,7 +416,7 @@ func reverseList(head *ListNode) *ListNode {
   返回 dummy.Next
 ```
 
-**模板**：
+**代码：**
 
 ```go
 func mergeTwoLists(l1, l2 *ListNode) *ListNode {
@@ -468,6 +515,16 @@ func detectCycle(head *ListNode) *ListNode {
 
 #### 括号匹配 — [LC20 有效括号](https://leetcode.com/problems/valid-parentheses/)
 
+**题意：**
+
+给定只含括号的字符串，判断括号是否按正确顺序闭合。
+
+**算法思想：**
+
+栈维护“最近未匹配左括号”，遇到右括号就和栈顶配对校验。
+
+**思路详解：**
+
 | 问题 | 信号 | 选型 | 套路 |
 |------|------|------|------|
 | [LC20](https://leetcode.com/problems/valid-parentheses/) 有效括号 | 成对、最近配对、嵌套 | 栈 LIFO = 最近未匹配 | 左入栈；右看栈顶→匹配则 pop；最后栈空 |
@@ -475,6 +532,8 @@ func detectCycle(head *ListNode) *ListNode {
 ```
 s="({[]})"  →  '('入  '{'入  '['入  ']' pop  '}' pop  ')' pop  → 栈空 ✓
 ```
+
+**代码：**
 
 ```go
 func isValid(s string) bool {
@@ -495,10 +554,22 @@ func isValid(s string) bool {
 
 #### [LC155 最小栈](https://leetcode.com/problems/min-stack/) · [LC232 用栈实现队列](https://leetcode.com/problems/implement-queue-using-stacks/)
 
+**题意：**
+
+LC155 要求栈在常规操作外支持 `O(1)` 取最小值；LC232 要求仅用栈实现队列。
+
+**算法思想：**
+
+LC155 用辅助栈同步维护最小值；LC232 用 `in/out` 双栈实现 FIFO。
+
+**思路详解：**
+
 | 问题 | 信号 | 套路 |
 |------|------|------|
 | [LC155](https://leetcode.com/problems/min-stack/) 最小栈 | O(1) 取最小 | 辅助栈同步存「当前最小」 |
 | [LC232](https://leetcode.com/problems/implement-queue-using-stacks/) 栈实现队列 | 两个栈模拟 FIFO | in 栈入队；出队时若 out 空则 in→out 全倒 |
+
+**代码：**
 
 ```go
 // LC155: 辅助栈
@@ -535,6 +606,16 @@ func (q *MyQueue) Pop() int {
 
 ### 3.2 单调栈 — [LC496 下一个更大元素](https://leetcode.com/problems/next-greater-element-i/)
 
+**题意：**
+
+对每个位置，找到它右侧第一个更大的元素，不存在返回 `-1`。
+
+**算法思想：**
+
+单调递减栈存下标：当前值更大时，批量结算被它“压住”的位置答案。
+
+**思路详解：**
+
 | 问题 | 信号 | 选型 | 套路 |
 |------|------|------|------|
 | [LC496](https://leetcode.com/problems/next-greater-element-i/) 下一个更大 | 右边第一个更大/更小 | 栈存下标、单调递减、遇大则批量结算 | 栈存下标；值单调减；nums[i]>栈顶→pop 写 res |
@@ -542,6 +623,8 @@ func (q *MyQueue) Pop() int {
 ```
 [2,1,2,4,3]  i=0 push  i=1 push  i=2 pop1→2  i=3 pop2,0→4  i=4 push  → res=[4,2,4,-1,-1]
 ```
+
+**代码：**
 
 ```go
 func nextGreaterElement(nums []int) []int {
@@ -567,6 +650,16 @@ func nextGreaterElement(nums []int) []int {
 
 ### 3.3 单调双端队列 — [LC239 滑动窗口最大值](https://leetcode.com/problems/sliding-window-maximum/)
 
+**题意：**
+
+给定长度为 `k` 的滑动窗口，返回每个窗口的最大值。
+
+**算法思想：**
+
+双端队列存下标并保持对应值单调递减，队头始终是当前窗口最大值下标。
+
+**思路详解：**
+
 | 问题 | 信号 | 选型 | 套路 |
 |------|------|------|------|
 | [LC239](https://leetcode.com/problems/sliding-window-maximum/) 滑动窗口最大值 | 固定长度窗口、窗口内最值 | 双端队列存下标、队内单调递减 | 队头=当前窗口最大；右移时淘汰过期+队尾小于新元素的 |
@@ -575,6 +668,8 @@ func nextGreaterElement(nums []int) []int {
 nums=[1,3,-1,-3,5,3], k=3
 dq存下标: [1,3,-1]→队头1最大=3 [3,-1,-3]→队头3最大=3 [-1,-3,5]→队头5最大=5 [5,3]→队头5最大=5
 ```
+
+**代码：**
 
 ```go
 func maxSlidingWindow(nums []int, k int) []int {
@@ -594,6 +689,16 @@ func maxSlidingWindow(nums []int, k int) []int {
 
 ### 3.4 BFS — [LC542 01 矩阵](https://leetcode.com/problems/01-matrix/) · [LC994 腐烂的橘子](https://leetcode.com/problems/rotting-oranges/)
 
+**题意：**
+
+这类题核心是“最少步数/层级扩散”：LC542 求到最近 0 的距离，LC994 求最少感染分钟数。
+
+**算法思想：**
+
+BFS 按层扩展，第一次到达即最短；若有多个起点，则使用多源 BFS 同时出发。
+
+**思路详解：**
+
 | 问题 | 信号 | 选型 | 套路 |
 |------|------|------|------|
 | [LC542](https://leetcode.com/problems/01-matrix/)/[LC994](https://leetcode.com/problems/rotting-oranges/) 最短步数 | 最短、最少操作、层序、扩散 | 队列 FIFO = 一层一层扩展；第一次到达=最短 | 入队时标记；出队→扩邻居→未访问则 dist+1 入队 |
@@ -610,6 +715,8 @@ func maxSlidingWindow(nums []int, k int) []int {
 ```
 图 0-1-3  |  初始[0] → 出0入1,2 → 出1入3 → 出2入4 → 出3,4  → dist=[0,1,1,2,2]
 ```
+
+**代码：**
 
 ```go
 func bfs(start int, g [][]int) []int {
@@ -641,7 +748,9 @@ func bfs(start int, g [][]int) []int {
 
 **题意**：0=空，1=新鲜，2=腐烂。每分钟腐烂的橘子会感染相邻新鲜橘子。求全部腐烂的最少分钟数，不可能则 -1。
 
-**思路**：所有腐烂的橘子入队，多源 BFS 扩散；每扩散一层 = 过 1 分钟。
+**算法思想：** 所有腐烂的橘子入队，多源 BFS 扩散；每扩散一层 = 过 1 分钟。
+
+**思路详解：**
 
 **停止条件**：
 
@@ -661,6 +770,8 @@ func bfs(start int, g [][]int) []int {
 第2分钟：继续…
 队列空 → 检查是否还有 1 → 无则返回 minute，有则 -1
 ```
+
+**代码：**
 
 ```go
 func orangesRotting(grid [][]int) int {
@@ -813,7 +924,15 @@ func mergeKLists(lists []*ListNode) *ListNode {
 
 **典型题：[LeetCode 257 二叉树的所有路径](https://leetcode.com/problems/binary-tree-paths/)**
 
+**题意：**
+
 > 返回所有从根到叶子的路径。
+
+**算法思想：**
+
+自顶向下 DFS：参数里携带当前路径，到叶子时收集结果。
+
+**思路详解：**
 
 ```
        1
@@ -834,7 +953,7 @@ func mergeKLists(lists []*ListNode) *ListNode {
   结果: [[1,2,5], [1,3]]
 ```
 
-**模板**：
+**代码：**
 
 ```go
 func paths(root *TreeNode, path []int, res *[][]int) {
@@ -855,7 +974,15 @@ func paths(root *TreeNode, path []int, res *[][]int) {
 
 **典型题：[LeetCode 543 二叉树的直径](https://leetcode.com/problems/diameter-of-binary-tree/)**
 
+**题意：**
+
 > 求任意两节点间最长路径的边数。
+
+**算法思想：**
+
+后序 DFS：递归返回“当前节点向下的最大臂长”，并用 `left+right` 更新全局直径。
+
+**思路详解：**
 
 ```
        1
@@ -872,7 +999,7 @@ func paths(root *TreeNode, path []int, res *[][]int) {
   答案 ans=3（路径 4→2→1→3）
 ```
 
-**模板**：
+**代码：**
 
 ```go
 func height(root *TreeNode) int {
@@ -895,7 +1022,15 @@ func diameter(root *TreeNode) int {
 
 **典型题：[LeetCode 105 从前序与中序遍历构造二叉树](https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/)**
 
+**题意：**
+
 > 给定 preorder 和 inorder，还原二叉树。
+
+**算法思想：**
+
+分治递归：前序首元素定根，在中序里切出左右子树区间后递归构建。
+
+**思路详解：**
 
 ```
   preorder = [3, 9, 20, 15, 7]
@@ -916,7 +1051,7 @@ func diameter(root *TreeNode) int {
        15   7
 ```
 
-**模板**：
+**代码：**
 
 ```go
 func buildTree(preorder, inorder []int) *TreeNode {
@@ -935,7 +1070,15 @@ func buildTree(preorder, inorder []int) *TreeNode {
 
 **典型题：[LeetCode 98 验证二叉搜索树](https://leetcode.com/problems/validate-binary-search-tree/)**
 
+**题意：**
+
 > 判断一棵二叉树是否是合法的 BST。
+
+**算法思想：**
+
+递归维护上下界 `(lo, hi)`：每个节点必须严格落在其允许区间中。
+
+**思路详解：**
 
 ```
        5
@@ -951,7 +1094,7 @@ func buildTree(preorder, inorder []int) *TreeNode {
   返回 false
 ```
 
-**模板**：
+**代码：**
 
 ```go
 func isValidBST(root *TreeNode) bool {
@@ -1091,7 +1234,15 @@ func permute(nums []int) [][]int {
 
 **典型题：[LeetCode 77 组合](https://leetcode.com/problems/combinations/)**
 
+**题意：**
+
 > 从 1..n 中选 k 个数，返回所有组合。
+
+**算法思想：**
+
+回溯 + `start`：下一层只能从后续数字选，天然去掉顺序重复。
+
+**思路详解：**
 
 ```
   n=4, k=2
@@ -1108,7 +1259,7 @@ func permute(nums []int) [][]int {
   关键: 从 start 开始往后选，避免重复（[2,1] 不会出现）
 ```
 
-**模板**：
+**代码：**
 
 ```go
 func combine(n, k int) [][]int {
@@ -1136,7 +1287,15 @@ func combine(n, k int) [][]int {
 
 **典型题：[LeetCode 78 子集](https://leetcode.com/problems/subsets/)**
 
+**题意：**
+
 > 返回数组的所有子集（幂集）。
+
+**算法思想：**
+
+回溯枚举决策树，每个递归节点代表一个合法子集，因此“到点就收集”。
+
+**思路详解：**
 
 ```
   nums = [1, 2, 3]
@@ -1158,7 +1317,7 @@ func combine(n, k int) [][]int {
   关键: 每个递归节点都收集一次（不像组合只在叶子收集）
 ```
 
-**模板**：
+**代码：**
 
 ```go
 func subsets(nums []int) [][]int {
@@ -1185,7 +1344,15 @@ func subsets(nums []int) [][]int {
 
 **典型题：[LeetCode 39 组合总和](https://leetcode.com/problems/combination-sum/)**
 
+**题意：**
+
 > 从 candidates 中选数（可重复），使和为 target。
+
+**算法思想：**
+
+回溯 + 剪枝：先排序，若当前候选数已经大于剩余值，直接 `break`。
+
+**思路详解：**
 
 ```
   candidates = [2, 3, 5], target = 7（已排序）
@@ -1206,7 +1373,7 @@ func subsets(nums []int) [][]int {
   排序 + "candidates[i]>remain → break" 避免了大量无效分支
 ```
 
-**模板**：
+**代码：**
 
 ```go
 func combinationSum(candidates []int, target int) [][]int {
@@ -1236,7 +1403,15 @@ func combinationSum(candidates []int, target int) [][]int {
 
 **典型题：[LeetCode 200 岛屿数量](https://leetcode.com/problems/number-of-islands/)**
 
+**题意：**
+
 > 二维网格中 '1' 是陆地，'0' 是水，求岛屿数量。
+
+**算法思想：**
+
+外层扫描 + 网格 DFS 感染：每遇到一个新 `'1'` 就 DFS 沉岛一次，计数加一。
+
+**思路详解：**
 
 ```
   grid:
@@ -1260,7 +1435,7 @@ func combinationSum(candidates []int, target int) [][]int {
   答案: 3
 ```
 
-**模板**：
+**代码：**
 
 ```go
 var dirs = [4][2]int{{1,0},{-1,0},{0,1},{0,-1}}
@@ -1414,7 +1589,15 @@ func longestCommonSubsequence(text1, text2 string) int {
 
 **典型题：[LeetCode 322 零钱兑换](https://leetcode.com/problems/coin-change/)**
 
+**题意：**
+
 > 用最少的硬币凑出 amount，硬币可重复选。
+
+**算法思想：**
+
+完全背包最小值模型：`dp[j]` 表示凑出金额 `j` 的最少硬币数。
+
+**思路详解：**
 
 ```
   coins = [1, 2, 5], amount = 11
@@ -1430,7 +1613,7 @@ func longestCommonSubsequence(text1, text2 string) int {
   答案: dp[11] = 3  (5+5+1)
 ```
 
-**模板**：
+**代码：**
 
 ```go
 func coinChange(coins []int, amount int) int {
@@ -1462,7 +1645,134 @@ func coinChange(coins []int, amount int) int {
 
 **本日目标**：掌握拓扑排序的两种实现和并查集在图问题中的应用。
 
+### 7.0 图遍历基础（补齐实现层）
+
+#### 连通块遍历（DFS / BFS 都可）
+
+**典型题：无向图连通分量（DFS/BFS 数块写法）**
+
+**题意：**
+
+给定无向图，统计有多少个连通分量。
+
+**算法思想：**
+
+外层遍历每个点；遇到未访问点就启动一次 DFS/BFS，把整块点标记为已访问，计数 +1。
+
+**思路详解：**
+
+- 外层循环每个节点 `u`
+- 若 `u` 未访问，说明发现一个新连通块
+- 以 `u` 为起点 DFS/BFS，把该块所有点访问完
+- 块数 `count++`
+
+**代码：**
+
+```go
+// DFS 数块
+func countComponentsDFS(n int, g [][]int) int {
+    vis := make([]bool, n)
+    var dfs func(int)
+    dfs = func(u int) {
+        vis[u] = true
+        for _, v := range g[u] {
+            if !vis[v] { dfs(v) }
+        }
+    }
+    cnt := 0
+    for i := 0; i < n; i++ {
+        if !vis[i] {
+            cnt++
+            dfs(i)
+        }
+    }
+    return cnt
+}
+
+// BFS 数块
+func countComponentsBFS(n int, g [][]int) int {
+    vis := make([]bool, n)
+    cnt := 0
+    for i := 0; i < n; i++ {
+        if vis[i] { continue }
+        cnt++
+        q := []int{i}
+        vis[i] = true
+        for len(q) > 0 {
+            u := q[0]
+            q = q[1:]
+            for _, v := range g[u] {
+                if !vis[v] {
+                    vis[v] = true
+                    q = append(q, v)
+                }
+            }
+        }
+    }
+    return cnt
+}
+```
+
+#### 所有路径枚举（DFS + 回溯）
+
+**典型题：[LeetCode 797 所有可能的路径](https://leetcode.com/problems/all-paths-from-source-to-target/)**
+
+**题意：**
+
+给定 DAG，返回从 `0` 到 `n-1` 的所有路径。
+
+**算法思想：**
+
+DFS 枚举每条可能路径；走到终点收集一条路径，递归返回时回溯弹栈。
+
+**思路详解：**
+
+- `path` 存当前路径
+- 进入节点先 `append`
+- 到终点就深拷贝收集
+- 遍历邻居递归
+- 回溯时弹出当前节点
+
+**代码：**
+
+```go
+func allPathsSourceTarget(graph [][]int) [][]int {
+    target := len(graph) - 1
+    var res [][]int
+    var path []int
+
+    var dfs func(int)
+    dfs = func(u int) {
+        path = append(path, u)
+        if u == target {
+            res = append(res, append([]int(nil), path...))
+            path = path[:len(path)-1]
+            return
+        }
+        for _, v := range graph[u] {
+            dfs(v)
+        }
+        path = path[:len(path)-1]
+    }
+
+    dfs(0)
+    return res
+}
+```
+
 ### 7.1 拓扑排序（Kahn 算法 / BFS）
+
+**典型题：[LeetCode 210 课程表 II](https://leetcode.com/problems/course-schedule-ii/)**
+
+**题意：**
+
+给定课程先修关系，输出一种可行的修课顺序；如果有环则无解。
+
+**算法思想：**
+
+Kahn 拓扑：持续弹出入度为 0 的点并删除其出边，最终若输出节点数 < n 则有环。
+
+**思路详解：**
 
 适用于**有向无环图 (DAG)**，找出一种合法的节点排列顺序，使得所有边的方向一致。
 
@@ -1480,6 +1790,8 @@ func coinChange(coins []int, amount int) int {
   
   拓扑序: [0, 1, 2, 3]（或 [0, 2, 1, 3]，不唯一）
 ```
+
+**代码：**
 
 ```go
 func topologicalSort(n int, edges [][]int) []int {
@@ -1514,6 +1826,23 @@ func topologicalSort(n int, edges [][]int) []int {
 **判断有环**：如果出队总数 < n，说明有节点入度永远不为 0 → 存在环。
 
 ### 7.2 拓扑排序（DFS 后序反转）
+
+**典型题：[LeetCode 207 课程表](https://leetcode.com/problems/course-schedule/)**
+
+**题意：**
+
+判断课程依赖图是否有环（有环则无法修完）。
+
+**算法思想：**
+
+DFS 三色标记：访问中节点再次被访问到，说明存在回边（有环）。
+
+**思路详解：**
+
+- `visited[u]=1` 表示当前 DFS 递归栈上的灰色节点
+- 遇到 `visited[v]==1` 即出现回边，图有环；无环时后序反转可得拓扑序
+
+**代码：**
 
 ```go
 func topologicalSortDFS(n int, g [][]int) []int {
@@ -1559,7 +1888,15 @@ func topologicalSortDFS(n int, g [][]int) []int {
 
 **典型题：[LeetCode 323 无向图中连通分量的数目](https://leetcode.com/problems/number-of-connected-components-in-an-undirected-graph/)**
 
+**题意：**
+
 > 给定 n 个节点和边列表，求连通分量数。
+
+**算法思想：**
+
+并查集维护“属于同一组”的关系，每次成功合并两个集合就让分量数减一。
+
+**思路详解：**
 
 ```
   n=5, edges=[[0,1],[1,2],[3,4]]
@@ -1573,7 +1910,7 @@ func topologicalSortDFS(n int, g [][]int) []int {
   答案: count=2
 ```
 
-**模板**：
+**代码：**
 
 ```go
 func countComponents(n int, edges [][]int) int {
@@ -1589,7 +1926,15 @@ func countComponents(n int, edges [][]int) int {
 
 **典型题：[LeetCode 261 以图判树](https://leetcode.com/problems/graph-valid-tree/)**
 
+**题意：**
+
 > 给定 n 个节点和边列表，判断是否能构成一棵树（连通 + 无环）。
+
+**算法思想：**
+
+树判定双条件：边数必须是 `n-1`，且并查集合并过程中不能出现成环。
+
+**思路详解：**
 
 ```
   n=5, edges=[[0,1],[0,2],[0,3],[1,4]]
@@ -1604,7 +1949,7 @@ func countComponents(n int, edges [][]int) int {
   反例: edges=[[0,1],[1,2],[2,0]] → 边数=3, n-1=2, 3≠2 → false
 ```
 
-**模板**：
+**代码：**
 
 ```go
 func validTree(n int, edges [][]int) bool {
@@ -1617,3 +1962,100 @@ func validTree(n int, edges [][]int) bool {
     return uf.count == 1
 }
 ```
+
+### 7.4 最短路（Dijkstra，非负权）
+
+**典型题：[LeetCode 743 网络延迟时间](https://leetcode.com/problems/network-delay-time/)**
+
+**题意：**
+
+> 给定有向带权图，边权为非负，求从起点到所有点的最短时间中的最大值。
+
+#### 什么时候用 Dijkstra？
+
+- 图是**带权图**
+- 边权是**非负数**
+- 目标是单源最短路（从一个起点到所有点，或到某个终点）
+
+**算法思想：**
+
+单源最短路 Dijkstra：小根堆每次扩展当前最短未确定节点，并进行边松弛。
+
+**思路详解：**
+
+- `dist[x]` 表示起点到 `x` 的当前最短距离，初始为无穷，起点为 0
+- 用小根堆每次取出当前距离最小的节点进行松弛
+- 对每条边 `u -> v (w)`，尝试更新：`dist[v] > dist[u] + w`
+
+**代码：**
+
+```go
+import "container/heap"
+
+type Item struct {
+    node int
+    dist int
+}
+type MinHeap []Item
+func (h MinHeap) Len() int            { return len(h) }
+func (h MinHeap) Less(i, j int) bool  { return h[i].dist < h[j].dist }
+func (h MinHeap) Swap(i, j int)       { h[i], h[j] = h[j], h[i] }
+func (h *MinHeap) Push(x interface{}) { *h = append(*h, x.(Item)) }
+func (h *MinHeap) Pop() interface{} {
+    old := *h
+    x := old[len(old)-1]
+    *h = old[:len(old)-1]
+    return x
+}
+
+func dijkstra(n int, g [][][2]int, start int) []int {
+    const INF = int(1e18)
+    dist := make([]int, n)
+    for i := range dist { dist[i] = INF }
+    dist[start] = 0
+
+    h := &MinHeap{{node: start, dist: 0}}
+    heap.Init(h)
+
+    for h.Len() > 0 {
+        cur := heap.Pop(h).(Item)
+        u, d := cur.node, cur.dist
+        if d > dist[u] { continue } // 过期堆元素
+
+        for _, e := range g[u] {
+            v, w := e[0], e[1]
+            if dist[u]+w < dist[v] {
+                dist[v] = dist[u] + w
+                heap.Push(h, Item{node: v, dist: dist[v]})
+            }
+        }
+    }
+    return dist
+}
+```
+
+**复杂度**：邻接表 + 堆实现时，时间 `O((V+E) log V)`，空间 `O(V+E)`。
+
+**常见坑**：
+- Dijkstra **不能**处理负权边
+- 邻接矩阵写法通常是 `O(V^2)`，点多时会超时
+- 堆中会有“过期状态”，需要 `if d > dist[u] { continue }`
+
+### 7.5 图题选型总表（实现层）
+
+| 问题类型 | 推荐算法 | 关键条件 |
+|----------|----------|----------|
+| 无权最短路 | BFS | 每条边代价视为 1 |
+| 非负权最短路 | Dijkstra | 边权 >= 0 |
+| 含负权最短路 | Bellman-Ford / SPFA（面试了解） | 可检测负环 |
+| DAG 最短路 | 拓扑序 + DP 松弛 | 图必须无环 |
+| 连通分量 | DFS/BFS 或 并查集 | 无向图最常见 |
+| 有向图判环 | DFS 三色 / 拓扑排序 | 课程依赖类题型 |
+| 最小生成树 | Kruskal / Prim（面试了解） | 连通 + 最小总边权 |
+
+> 面试主线优先级：**BFS（无权） → Dijkstra（非负权） → 拓扑 / 并查集**。  
+> Bellman-Ford、MST 知道用途与复杂度即可。
+
+---
+
+**下一站**：→ [combo.md - Day 7](combo.md#day-7综合与查漏补缺) → [practice.md - Day 7](practice.md#day-7) → [quiz.md - Day 7](quiz.md#day-7)。

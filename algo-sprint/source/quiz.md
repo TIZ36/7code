@@ -17,6 +17,7 @@
 - [ ] 最大最小值是否溢出？
 - [ ] 复杂度是否符合预期（看 n 的范围推算）？
 - [ ] 代码能否再简化（变量名、冗余判断）？
+- [ ] 图题是否正确处理 visited / 入度 / 过期堆元素（Dijkstra）？
 
 ---
 
@@ -133,9 +134,9 @@
 | 1 | 200 | [岛屿数量](https://leetcode.com/problems/number-of-islands/) | Med | 20min | 连通块 → DFS/BFS/并查集 |
 | 2 | 210 | [课程表 II](https://leetcode.com/problems/course-schedule-ii/) | Med | 20min | 依赖 → 拓扑排序输出序 |
 | 3 | 128 | [最长连续序列](https://leetcode.com/problems/longest-consecutive-sequence/) | Med | 20min | 连续 → 哈希表 + 只从起点枚举 |
-| 4 | 42 | [接雨水](https://leetcode.com/problems/trapping-rain-water/) | Hard | 30min | 每列水量 → 双指针/单调栈 |
+| 4 | 743 | [网络延迟时间](https://leetcode.com/problems/network-delay-time/) | Med | 30min | 带权最短路（非负）→ Dijkstra |
 
-**Day 7 完成标准**：1～3 独立完成。第 4 题能用至少一种方法写出。
+**Day 7 完成标准**：1～3 独立完成。第 4 题能写出 Dijkstra（堆优化）框架。
 
 ---
 

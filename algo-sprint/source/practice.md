@@ -743,4 +743,84 @@ func canFinish(numCourses int, prerequisites [][]int) bool {
 
 ---
 
+### 例题 3：[网络延迟时间](https://leetcode.com/problems/network-delay-time/) — LeetCode 743
+
+**题意**：有向带权图中，从节点 `k` 发信号到所有节点，求最久到达时间；若有节点不可达返回 `-1`。
+
+<details><summary>💡 提示 1（方向）</summary>
+
+这是**单源最短路**。边有权重且是非负，应该优先想到哪种算法？
+
+</details>
+
+<details><summary>💡 提示 2（更具体）</summary>
+
+用 Dijkstra：`dist[k]=0`，其余为无穷。每次从小根堆取当前最小距离节点，尝试松弛邻边。
+
+</details>
+
+<details><summary>✅ 完整思路与代码</summary>
+
+**思路**：邻接表 + 小根堆 Dijkstra。最终取 `dist[1..n]` 最大值；若有无穷则返回 `-1`。
+
+```go
+import "container/heap"
+
+type pair struct{ d, x int }
+type hp []pair
+func (h hp) Len() int            { return len(h) }
+func (h hp) Less(i, j int) bool  { return h[i].d < h[j].d }
+func (h hp) Swap(i, j int)       { h[i], h[j] = h[j], h[i] }
+func (h *hp) Push(v interface{}) { *h = append(*h, v.(pair)) }
+func (h *hp) Pop() interface{} {
+    old := *h
+    v := old[len(old)-1]
+    *h = old[:len(old)-1]
+    return v
+}
+
+func networkDelayTime(times [][]int, n int, k int) int {
+    g := make([][][2]int, n+1)
+    for _, e := range times {
+        u, v, w := e[0], e[1], e[2]
+        g[u] = append(g[u], [2]int{v, w})
+    }
+
+    const INF = int(1e18)
+    dist := make([]int, n+1)
+    for i := 1; i <= n; i++ { dist[i] = INF }
+    dist[k] = 0
+
+    pq := &hp{{0, k}}
+    heap.Init(pq)
+    for pq.Len() > 0 {
+        cur := heap.Pop(pq).(pair)
+        d, u := cur.d, cur.x
+        if d > dist[u] { continue } // 过期状态
+        for _, e := range g[u] {
+            v, w := e[0], e[1]
+            if d+w < dist[v] {
+                dist[v] = d + w
+                heap.Push(pq, pair{dist[v], v})
+            }
+        }
+    }
+
+    ans := 0
+    for i := 1; i <= n; i++ {
+        if dist[i] == INF { return -1 }
+        if dist[i] > ans { ans = dist[i] }
+    }
+    return ans
+}
+```
+
+**复杂度**：时间 `O((V+E)logV)`，空间 `O(V+E)`。
+
+**边界检查**：单节点图 `n=1`；图不连通返回 `-1`；边权非负（Dijkstra 前提）。
+
+</details>
+
+---
+
 **下一站**：→ [quiz.md - Day 7](quiz.md#day-7)。完成即完成 7 日速通。
