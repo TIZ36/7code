@@ -3,10 +3,10 @@
 > 本文件由 `sync_leetcode.sh` 自动更新。
 > 建议用法：每天主线题之外，再加 1~2 道实时题，避免只会旧题模板。
 
-- 同步时间：`2026-02-28 10:47:53 UTC+08:00`
+- 同步时间：`2026-03-03 11:04:02 UTC+08:00`
 - 题库来源：`https://leetcode.com/api/problems/algorithms/`（已存本地：`source/leetcode_live.json`）
 - 岗位画像：`backend`（可选：backend / ai）
-- 免费题总数：`2928`
+- 免费题总数：`2936`
 
 ---
 
@@ -14,26 +14,26 @@
 
 | # | 题号 | 题目 | 难度 | 考察内容 | 链接 |
 |---|------|------|------|----------|------|
-| 1 | 3848 | Check Digitorial Permutation | Medium | DFS/BFS/回溯 | [Link](https://leetcode.com/problems/check-digitorial-permutation/) |
-| 2 | 3847 | Find the Score Difference in a Game | Medium | 双指针/位运算 | [Link](https://leetcode.com/problems/find-the-score-difference-in-a-game/) |
-| 3 | 3844 | Longest Almost-Palindromic Substring | Medium | 数组/字符串 + 树 | [Link](https://leetcode.com/problems/longest-almost-palindromic-substring/) |
-| 4 | 3843 | First Element with Unique Frequency | Medium | 综合 | [Link](https://leetcode.com/problems/first-element-with-unique-frequency/) |
-| 5 | 3838 | Weighted Word Mapping | Easy | 综合 | [Link](https://leetcode.com/problems/weighted-word-mapping/) |
-| 6 | 3833 | Count Dominant Indices | Easy | 综合 | [Link](https://leetcode.com/problems/count-dominant-indices/) |
-| 7 | 3834 | Merge Adjacent Equal Elements | Medium | 综合 | [Link](https://leetcode.com/problems/merge-adjacent-equal-elements/) |
-| 8 | 3842 | Toggle Light Bulbs | Easy | 综合 | [Link](https://leetcode.com/problems/toggle-light-bulbs/) |
-| 9 | 3835 | Count Subarrays With Cost Less Than or Equal to K | Medium | 数组/字符串 | [Link](https://leetcode.com/problems/count-subarrays-with-cost-less-than-or-equal-to-k/) |
-| 10 | 3841 | Palindromic Path Queries in a Tree | Hard | 树 | [Link](https://leetcode.com/problems/palindromic-path-queries-in-a-tree/) |
-| 11 | 3845 | Maximum Subarray XOR with Bounded Range | Hard | 数组/字符串 + 双指针/位运算 | [Link](https://leetcode.com/problems/maximum-subarray-xor-with-bounded-range/) |
-| 12 | 3836 | Maximum Score Using Exactly K Pairs | Hard | 双指针/位运算 | [Link](https://leetcode.com/problems/maximum-score-using-exactly-k-pairs/) |
-| 13 | 3823 | Reverse Letters Then Special Characters in a String | Easy | 数组/字符串 | [Link](https://leetcode.com/problems/reverse-letters-then-special-characters-in-a-string/) |
-| 14 | 3818 | Minimum Prefix Removal to Make Array Strictly Increasing | Medium | 数组/字符串 | [Link](https://leetcode.com/problems/minimum-prefix-removal-to-make-array-strictly-increasing/) |
-| 15 | 3830 | Longest Alternating Subarray After Removing At Most One Element | Hard | 数组/字符串 | [Link](https://leetcode.com/problems/longest-alternating-subarray-after-removing-at-most-one-element/) |
-| 16 | 3827 | Count Monobit Integers | Easy | 综合 | [Link](https://leetcode.com/problems/count-monobit-integers/) |
-| 17 | 3810 | Minimum Operations to Reach Target Array | Medium | 数组/字符串 | [Link](https://leetcode.com/problems/minimum-operations-to-reach-target-array/) |
-| 18 | 3821 | Find Nth Smallest Integer With K One Bits | Hard | 综合 | [Link](https://leetcode.com/problems/find-nth-smallest-integer-with-k-one-bits/) |
-| 19 | 3809 | Best Reachable Tower | Medium | 综合 | [Link](https://leetcode.com/problems/best-reachable-tower/) |
-| 20 | 3803 | Count Residue Prefixes | Easy | 数组/字符串 | [Link](https://leetcode.com/problems/count-residue-prefixes/) |
+| 1 | 3855 | Sum of K-Digit Numbers in a Range | Hard | 数组/字符串 | [Link](https://leetcode.com/problems/sum-of-k-digit-numbers-in-a-range/) |
+| 2 | 3852 | Smallest Pair With Different Frequencies | Easy | 双指针/位运算 | [Link](https://leetcode.com/problems/smallest-pair-with-different-frequencies/) |
+| 3 | 3856 | Trim Trailing Vowels | Easy | 综合 | [Link](https://leetcode.com/problems/trim-trailing-vowels/) |
+| 4 | 3848 | Check Digitorial Permutation | Medium | DFS/BFS/回溯 | [Link](https://leetcode.com/problems/check-digitorial-permutation/) |
+| 5 | 3847 | Find the Score Difference in a Game | Medium | 双指针/位运算 | [Link](https://leetcode.com/problems/find-the-score-difference-in-a-game/) |
+| 6 | 3844 | Longest Almost-Palindromic Substring | Medium | 数组/字符串 + 树 | [Link](https://leetcode.com/problems/longest-almost-palindromic-substring/) |
+| 7 | 3854 | Minimum Operations to Make Array Parity Alternating | Medium | 数组/字符串 | [Link](https://leetcode.com/problems/minimum-operations-to-make-array-parity-alternating/) |
+| 8 | 3843 | First Element with Unique Frequency | Medium | 综合 | [Link](https://leetcode.com/problems/first-element-with-unique-frequency/) |
+| 9 | 3838 | Weighted Word Mapping | Easy | 综合 | [Link](https://leetcode.com/problems/weighted-word-mapping/) |
+| 10 | 3833 | Count Dominant Indices | Easy | 综合 | [Link](https://leetcode.com/problems/count-dominant-indices/) |
+| 11 | 3834 | Merge Adjacent Equal Elements | Medium | 综合 | [Link](https://leetcode.com/problems/merge-adjacent-equal-elements/) |
+| 12 | 3842 | Toggle Light Bulbs | Easy | 综合 | [Link](https://leetcode.com/problems/toggle-light-bulbs/) |
+| 13 | 3835 | Count Subarrays With Cost Less Than or Equal to K | Medium | 数组/字符串 | [Link](https://leetcode.com/problems/count-subarrays-with-cost-less-than-or-equal-to-k/) |
+| 14 | 3841 | Palindromic Path Queries in a Tree | Hard | 树 | [Link](https://leetcode.com/problems/palindromic-path-queries-in-a-tree/) |
+| 15 | 3845 | Maximum Subarray XOR with Bounded Range | Hard | 数组/字符串 + 双指针/位运算 | [Link](https://leetcode.com/problems/maximum-subarray-xor-with-bounded-range/) |
+| 16 | 3836 | Maximum Score Using Exactly K Pairs | Hard | 双指针/位运算 | [Link](https://leetcode.com/problems/maximum-score-using-exactly-k-pairs/) |
+| 17 | 3823 | Reverse Letters Then Special Characters in a String | Easy | 数组/字符串 | [Link](https://leetcode.com/problems/reverse-letters-then-special-characters-in-a-string/) |
+| 18 | 3818 | Minimum Prefix Removal to Make Array Strictly Increasing | Medium | 数组/字符串 | [Link](https://leetcode.com/problems/minimum-prefix-removal-to-make-array-strictly-increasing/) |
+| 19 | 3830 | Longest Alternating Subarray After Removing At Most One Element | Hard | 数组/字符串 | [Link](https://leetcode.com/problems/longest-alternating-subarray-after-removing-at-most-one-element/) |
+| 20 | 3827 | Count Monobit Integers | Easy | 综合 | [Link](https://leetcode.com/problems/count-monobit-integers/) |
 
 ---
 
@@ -43,14 +43,14 @@
 
 | # | 题号 | 题目 | 难度 | 考察内容 | 链接 |
 |---|------|------|------|----------|------|
-| 1 | 3838 | Weighted Word Mapping | Easy | 综合 | [Link](https://leetcode.com/problems/weighted-word-mapping/) |
-| 2 | 3835 | Count Subarrays With Cost Less Than or Equal to K | Medium | 数组/字符串 | [Link](https://leetcode.com/problems/count-subarrays-with-cost-less-than-or-equal-to-k/) |
-| 3 | 3845 | Maximum Subarray XOR with Bounded Range | Hard | 数组/字符串 + 双指针/位运算 | [Link](https://leetcode.com/problems/maximum-subarray-xor-with-bounded-range/) |
-| 4 | 3823 | Reverse Letters Then Special Characters in a String | Easy | 数组/字符串 | [Link](https://leetcode.com/problems/reverse-letters-then-special-characters-in-a-string/) |
-| 5 | 3818 | Minimum Prefix Removal to Make Array Strictly Increasing | Medium | 数组/字符串 | [Link](https://leetcode.com/problems/minimum-prefix-removal-to-make-array-strictly-increasing/) |
-| 6 | 3830 | Longest Alternating Subarray After Removing At Most One Element | Hard | 数组/字符串 | [Link](https://leetcode.com/problems/longest-alternating-subarray-after-removing-at-most-one-element/) |
-| 7 | 3810 | Minimum Operations to Reach Target Array | Medium | 数组/字符串 | [Link](https://leetcode.com/problems/minimum-operations-to-reach-target-array/) |
-| 8 | 3803 | Count Residue Prefixes | Easy | 数组/字符串 | [Link](https://leetcode.com/problems/count-residue-prefixes/) |
+| 1 | 3854 | Minimum Operations to Make Array Parity Alternating | Medium | 数组/字符串 | [Link](https://leetcode.com/problems/minimum-operations-to-make-array-parity-alternating/) |
+| 2 | 3838 | Weighted Word Mapping | Easy | 综合 | [Link](https://leetcode.com/problems/weighted-word-mapping/) |
+| 3 | 3835 | Count Subarrays With Cost Less Than or Equal to K | Medium | 数组/字符串 | [Link](https://leetcode.com/problems/count-subarrays-with-cost-less-than-or-equal-to-k/) |
+| 4 | 3845 | Maximum Subarray XOR with Bounded Range | Hard | 数组/字符串 + 双指针/位运算 | [Link](https://leetcode.com/problems/maximum-subarray-xor-with-bounded-range/) |
+| 5 | 3823 | Reverse Letters Then Special Characters in a String | Easy | 数组/字符串 | [Link](https://leetcode.com/problems/reverse-letters-then-special-characters-in-a-string/) |
+| 6 | 3818 | Minimum Prefix Removal to Make Array Strictly Increasing | Medium | 数组/字符串 | [Link](https://leetcode.com/problems/minimum-prefix-removal-to-make-array-strictly-increasing/) |
+| 7 | 3830 | Longest Alternating Subarray After Removing At Most One Element | Hard | 数组/字符串 | [Link](https://leetcode.com/problems/longest-alternating-subarray-after-removing-at-most-one-element/) |
+| 8 | 3810 | Minimum Operations to Reach Target Array | Medium | 数组/字符串 | [Link](https://leetcode.com/problems/minimum-operations-to-reach-target-array/) |
 
 ---
 
@@ -84,7 +84,7 @@
 | 5 | 2904 | Shortest and Lexicographically Smallest Beautiful String | Medium | 数组/字符串 + 图/并查集 | [Link](https://leetcode.com/problems/shortest-and-lexicographically-smallest-beautiful-string/) |
 | 6 | 2734 | Lexicographically Smallest String After Substring Operation | Medium | 数组/字符串 + 树 | [Link](https://leetcode.com/problems/lexicographically-smallest-string-after-substring-operation/) |
 | 7 | 3844 | Longest Almost-Palindromic Substring | Medium | 数组/字符串 + 树 | [Link](https://leetcode.com/problems/longest-almost-palindromic-substring/) |
-| 8 | 3794 | Reverse String Prefix | Easy | 数组/字符串 | [Link](https://leetcode.com/problems/reverse-string-prefix/) |
+| 8 | 3803 | Count Residue Prefixes | Easy | 数组/字符串 | [Link](https://leetcode.com/problems/count-residue-prefixes/) |
 
 ---
 
